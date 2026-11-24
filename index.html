@@ -1,0 +1,191 @@
+
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>APEX SEASON TRACKER</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="logo">APEX<span>.</span></div>
+      <p>SEASON TRACKER</p>
+    </header>
+
+    <section class="hero">
+      <p class="sub">TRACK YOUR LEGACY</p>
+      <h1>SEASON <span>RECORD</span></h1>
+      <p>シーズンの戦績を記録しよう。</p>
+    </section>
+
+    <section class="panel">
+      <h2>MODE SELECT</h2>
+      <select id="mode">
+        <option value="RANKED">ランク</option>
+        <option value="CASUAL">カジュアル</option>
+      </select>
+      <input id="season" value="シーズン 1 〜" placeholder="シーズン">
+    </section>
+
+    <section class="panel">
+      <h2>MATCH DATA</h2>
+      <form id="matchForm">
+        <input type="date" id="date" required>
+        <input type="text" id="legend" placeholder="レジェンド">
+        <input type="number" id="place" placeholder="順位" min="1" max="20" required>
+        <input type="number" id="kills" placeholder="キル" min="0" required>
+        <input type="number" id="assists" placeholder="アシスト" min="0">
+        <input type="number" id="damage" placeholder="ダメージ" min="0" required>
+        <button type="submit">＋ 戦績を追加</button>
+      </form>
+    </section>
+
+    <section class="records">
+      <h2>MATCH LOG</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>DATE</th>
+              <th>LEGEND</th>
+              <th>PLACE</th>
+              <th>K</th>
+              <th>A</th>
+              <th>DAMAGE</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="records"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="share">
+      <h2>SHARE YOUR RESULT</h2>
+      <button id="download">画像を保存</button>
+      <button id="post">𝕏 Xでポスト</button>
+    </section>
+
+    <footer>APEX SEASON TRACKER / UNOFFICIAL FAN TOOL</footer>
+  </main>
+
+  <div id="capture">
+    <div id="shareCard">
+      <h1>APEX<span>.</span></h1>
+      <p id="shareMode">RANKED</p>
+      <h2>MY SEASON<br><span>RECORD</span></h2>
+      <p id="shareSeason"></p>
+      <div class="stats">
+        <div><small>MATCHES</small><strong id="totalMatches">0</strong></div>
+        <div><small>KILLS</small><strong id="totalKills">0</strong></div>
+        <div><small>DAMAGE</small><strong id="totalDamage">0</strong></div>
+      </div>
+      <div id="shareRecords"></div>
+      <p class="bottom">DROP IN. FIGHT ON.</p>
+    </div>
+  </div>
+
+<script>
+const $ = id => document.getElementById(id);
+const data = [];
+
+$("date").value = new Date().toISOString().slice(0,10);
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function render() {
+  $("records").innerHTML = data.map((r,i) => `
+    <tr>
+      <td>${i+1}</td>
+      <td>${esc(r.date)}</td>
+      <td>${esc(r.legend || "—")}</td>
+      <td>#${r.place}</td>
+      <td>${r.kills}</td>
+      <td>${r.assists}</td>
+      <td>${r.damage.toLocaleString()}</td>
+      <td><button onclick="removeRecord(${i})">×</button></td>
+    </tr>
+  `).join("");
+
+  $("totalMatches").textContent = data.length;
+  $("totalKills").textContent = data.reduce((a,r)=>a+r.kills,0);
+  $("totalDamage").textContent = data.reduce((a,r)=>a+r.damage,0).toLocaleString();
+
+  $("shareMode").textContent = $("mode").value;
+  $("shareSeason").textContent = $("season").value;
+
+  $("shareRecords").innerHTML = data.slice(0,12).map(r => `
+    <div class="share-row">
+      <span>${esc(r.date)} / ${esc(r.legend || "—")}</span>
+      <b>#${r.place}</b>
+      <span>${r.kills}K / ${r.assists}A</span>
+      <span>${r.damage.toLocaleString()} DMG</span>
+    </div>
+  `).join("");
+}
+
+function removeRecord(i) {
+  data.splice(i,1);
+  render();
+}
+
+$("matchForm").addEventListener("submit", e => {
+  e.preventDefault();
+
+  const r = {
+    date: $("date").value,
+    legend: $("legend").value.trim(),
+    place: Number($("place").value),
+    kills: Number($("kills").value),
+    assists: Number($("assists").value || 0),
+    damage: Number($("damage").value)
+  };
+
+  if(r.place < 1 || r.place > 20 || r.kills < 0 || r.assists < 0 || r.damage < 0) {
+    alert("入力内容を確認してください");
+    return;
+  }
+
+  data.unshift(r);
+  $("matchForm").reset();
+  $("date").value = new Date().toISOString().slice(0,10);
+  render();
+});
+
+$("mode").addEventListener("change",render);
+$("season").addEventListener("input",render);
+
+$("download").addEventListener("click", async () => {
+  const canvas = await html2canvas($("shareCard"), {
+    backgroundColor:"#0b101b",
+    scale:2
+  });
+  const a = document.createElement("a");
+  a.download = "apex-season-record.png";
+  a.href = canvas.toDataURL("image/png");
+  a.click();
+});
+
+$("post").addEventListener("click", () => {
+  const kills = data.reduce((a,r)=>a+r.kills,0);
+  const damage = data.reduce((a,r)=>a+r.damage,0);
+  const mode = $("mode").value === "RANKED" ? "ランク" : "カジュアル";
+  const text = `APEX ${$("season").value} / ${mode}\n${data.length}試合 | ${kills}キル | ${damage}ダメージ\n#ApexLegends #APEX戦績`;
+  window.open(
+    "https://twitter.com/intent/tweet?text="+encodeURIComponent(text),
+    "_blank"
+  );
+});
+
+render();
+</script>
+</body>
+</html>
