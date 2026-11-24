@@ -1,0 +1,322 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
+
+:root {
+  --bg: #090d16;
+  --panel: #111a29;
+  --red: #ff4655;
+  --cyan: #48d9e8;
+  --text: #f3f6fb;
+  --muted: #8190a7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 80% 5%, #35151d, transparent 35%),
+    var(--bg);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+.app {
+  width: min(1100px, 92%);
+  margin: auto;
+}
+
+header {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #263246;
+}
+
+.logo {
+  font: 900 36px 'Barlow Condensed';
+  letter-spacing: 3px;
+}
+
+.logo span, #shareCard h1 span {
+  color: var(--red);
+}
+
+header p {
+  color: var(--muted);
+  font: 700 12px 'Barlow Condensed';
+  letter-spacing: 3px;
+}
+
+.hero {
+  padding: 60px 0 35px;
+}
+
+.sub {
+  color: var(--cyan);
+  font: 700 12px 'Barlow Condensed';
+  letter-spacing: 3px;
+}
+
+.hero h1 {
+  margin: 10px 0;
+  font: 900 clamp(50px, 9vw, 90px)/1 'Barlow Condensed';
+}
+
+.hero h1 span, .share h2 {
+  color: var(--red);
+}
+
+.hero p:last-child {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.panel {
+  padding: 25px;
+  margin-bottom: 18px;
+  border: 1px solid #263246;
+  background: linear-gradient(135deg, #172235, #0e1522);
+}
+
+h2 {
+  font-size: 16px;
+  letter-spacing: 2px;
+}
+
+.panel h2 {
+  margin: 0 0 20px;
+}
+
+input, select {
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid #33445b;
+  border-radius: 3px;
+  background: #0a1220;
+  color: white;
+  font: 13px 'Noto Sans JP';
+  min-width: 0;
+}
+
+select {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+#season {
+  width: 100%;
+}
+
+#matchForm {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+button {
+  height: 44px;
+  padding: 0 18px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  background: var(--red);
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s;
+}
+
+button:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+#matchForm button {
+  grid-column: span 3;
+}
+
+.records {
+  margin-top: 45px;
+}
+
+.records h2 {
+  font: 800 28px 'Barlow Condensed';
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border: 1px solid #263246;
+  background: var(--panel);
+}
+
+table {
+  width: 100%;
+  min-width: 650px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  color: var(--muted);
+  font: 700 12px 'Barlow Condensed';
+  letter-spacing: 1px;
+}
+
+th, td {
+  padding: 15px;
+  border-bottom: 1px solid #263246;
+  font-size: 12px;
+}
+
+td button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  background: #273448;
+}
+
+.share {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 50px 0;
+  padding: 25px;
+  border-left: 3px solid var(--red);
+  background: #141d2c;
+}
+
+.share h2 {
+  font: 800 28px 'Barlow Condensed';
+  margin: 0;
+}
+
+#post {
+  border: 1px solid #53647a;
+  background: #101827;
+}
+
+footer {
+  padding: 22px 0;
+  border-top: 1px solid #263246;
+  color: var(--muted);
+  font: 700 10px 'Barlow Condensed';
+  letter-spacing: 2px;
+}
+
+#capture {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+}
+
+#shareCard {
+  width: 1000px;
+  min-height: 1100px;
+  padding: 65px;
+  color: white;
+  background:
+    radial-gradient(circle at 90% 10%, #42202a, transparent 30%),
+    #0b101b;
+  border-left: 12px solid var(--red);
+  font-family: 'Noto Sans JP', sans-serif;
+}
+
+#shareCard h1 {
+  font: 900 50px 'Barlow Condensed';
+  letter-spacing: 4px;
+}
+
+#shareCard h2 {
+  margin: 70px 0 20px;
+  font: 900 85px/.95 'Barlow Condensed';
+}
+
+#shareCard h2 span {
+  color: var(--red);
+}
+
+#shareMode {
+  margin-top: 70px;
+  color: var(--cyan);
+  font: 800 20px 'Barlow Condensed';
+  letter-spacing: 4px;
+}
+
+#shareSeason {
+  color: var(--muted);
+  font-size: 18px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 40px 0;
+}
+
+.stats div {
+  padding: 20px;
+  border: 1px solid #344258;
+  background: #111a29;
+}
+
+.stats small {
+  display: block;
+  color: var(--muted);
+  font: 700 15px 'Barlow Condensed';
+}
+
+.stats strong {
+  display: block;
+  margin-top: 8px;
+  font: 800 42px 'Barlow Condensed';
+}
+
+.share-row {
+  display: grid;
+  grid-template-columns: 2fr .5fr 1fr 1fr;
+  gap: 12px;
+  padding: 15px;
+  border-bottom: 1px solid #29374b;
+  font-size: 13px;
+}
+
+.share-row b {
+  color: var(--red);
+}
+
+.bottom {
+  margin-top: 50px;
+  color: var(--muted);
+  font: 700 15px 'Barlow Condensed';
+  letter-spacing: 3px;
+}
+
+@media(max-width: 650px) {
+  #matchForm {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #matchForm button {
+    grid-column: span 2;
+  }
+
+  .share {
+    display: block;
+  }
+
+  .share button {
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  header p {
+    font-size: 9px;
+  }
+}
