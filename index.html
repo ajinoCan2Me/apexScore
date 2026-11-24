@@ -1,5 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Stats Card</title>
+
+<style>
+body {
+    background: #222;
+    color: white;
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+.input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+select, input {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    margin-top: 15px;
+    padding: 12px;
+    background: #e84141;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+button:hover {
+    background: #ff5555;
+}
+
+.download-btn {
+    background: #3988ff;
+}
+
+.download-btn:hover {
+    background: #5599ff;
+}
+
+canvas {
+    display: block;
+    margin-top: 25px;
+    max-width: 100%;
+    height: auto;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Apex 戦績入力</h2>
+
+<div class="input-area">
+
+    <div class="input-group">
+        <label>Name</label>
+        <input type="text" id="playerName" placeholder="プレイヤー名">
+    </div>
+
+    <div class="input-group">
+        <label>Season</label>
+        <select id="season">
+            <option value="31">S31</option>
+            <option value="30">S30</option>
+            <option value="29">S29</option>
+            <option value="28">S28</option>
+            <option value="27">S27</option>
+            <option value="26">S26</option>
+            <option value="25">S25</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Rank</label>
+        <select id="rank">
+            <option value="Rookie">ルーキー</option>
+            <option value="Bronze" selected>ブロンズ</option>
+            <option value="Silver">シルバー</option>
+            <option value="Gold">ゴールド</option>
+            <option value="Platinum">プラチナ</option>
+            <option value="Diamond">ダイヤ</option>
+            <option value="Master">マスター</option>
+            <option value="Apex Predator">プレデター</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>High DMG</label>
+        <input type="number" id="highDmg" placeholder="0000">
+    </div>
+
+    <div class="input-group">
+        <label>AVG DMG</label>
+        <input type="number" id="avgDmg" placeholder="0000">
+    </div>
+
+    <div class="input-group">
+        <label>K/D</label>
+        <input type="number" id="kd" placeholder="00.0" step="0.1">
+    </div>
+
+</div>
+
+<button onclick="generateImage()">画像を生成・コピー</button>
+<button class="download-btn" onclick="downloadImage()">画像をダウンロード</button>
+
+<canvas id="canvas" width="800" height="450"></canvas>
+
 <script>
-async function generateImage() {
+
+function drawImage() {
 
     const playerName =
         document.getElementById("playerName").value || "Player";
@@ -26,17 +155,21 @@ async function generateImage() {
 
     const rankColor = rankColors[rank] || "#FFFFFF";
 
+    // 背景
     ctx.fillStyle = "#171923";
     ctx.fillRect(0, 0, 800, 450);
 
+    // アクセントライン
     ctx.fillStyle = rankColor;
     ctx.fillRect(0, 0, 800, 12);
 
+    // タイトル
     ctx.fillStyle = "#ffffff";
     ctx.font = "bold 42px sans-serif";
     ctx.textAlign = "left";
     ctx.fillText("APEX LEGENDS", 40, 75);
 
+    // Player Name
     ctx.save();
     ctx.shadowColor = rankColor;
     ctx.shadowBlur = 15;
@@ -44,8 +177,10 @@ async function generateImage() {
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "bold 48px sans-serif";
     ctx.fillText(playerName, 40, 155, 700);
+
     ctx.restore();
 
+    // Season
     ctx.fillStyle = "#aaaaaa";
     ctx.font = "28px sans-serif";
     ctx.fillText("SEASON", 50, 220);
@@ -54,6 +189,7 @@ async function generateImage() {
     ctx.font = "bold 38px sans-serif";
     ctx.fillText("S" + season, 50, 270);
 
+    // Rank
     ctx.fillStyle = "#aaaaaa";
     ctx.font = "28px sans-serif";
     ctx.fillText("RANK", 300, 220);
@@ -62,6 +198,7 @@ async function generateImage() {
     ctx.font = "bold 38px sans-serif";
     ctx.fillText(rank, 300, 270);
 
+    // 数値データ
     const stats = [
         ["HIGH DMG", highDmg],
         ["AVG DMG", avgDmg],
@@ -83,36 +220,66 @@ async function generateImage() {
         ctx.fillText(stat[1], x + 20, 405);
     });
 
-    // PNG画像を作成
-    const blob = await new Promise(resolve =>
-        canvas.toBlob(resolve, "image/png")
-    );
+    return canvas;
+}
+
+// 画像生成・コピー
+async function generateImage() {
+
+    const canvas = drawImage();
+
+    const blob = await new Promise(resolve => {
+        canvas.toBlob(resolve, "image/png");
+    });
 
     if (!blob) {
         alert("画像の生成に失敗しました");
         return;
     }
 
-    // 画像をコピー
     try {
+        if (!navigator.clipboard || !window.ClipboardItem) {
+            throw new Error("Clipboard API unavailable");
+        }
+
         await navigator.clipboard.write([
             new ClipboardItem({
                 "image/png": blob
             })
         ]);
 
-        alert("画像をコピーしました！ Ctrl + V で貼り付けできます。");
+        alert("画像をコピーしました！\nCtrl + V で貼り付けできます！");
 
     } catch (error) {
-        // コピーできない場合はダウンロード
-        const link = document.createElement("a");
-        link.download = "apex-stats.png";
-        link.href = URL.createObjectURL(blob);
-        link.click();
-
-        URL.revokeObjectURL(link.href);
-
-        alert("コピーできなかったため、画像をダウンロードしました。");
+        alert("画像コピーに失敗しました。\nHTTPSまたは対応ブラウザでお試しください。");
     }
 }
+
+// 画像ダウンロード
+function downloadImage() {
+
+    const canvas = drawImage();
+
+    canvas.toBlob(blob => {
+
+        if (!blob) {
+            alert("画像の生成に失敗しました");
+            return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+
+        link.download = "apex-stats.png";
+        link.href = url;
+        link.click();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+    }, "image/png");
+}
+
 </script>
+
+</body>
+</html>
