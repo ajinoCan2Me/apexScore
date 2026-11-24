@@ -1,191 +1,313 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>APEX SEASON TRACKER</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APEX LEGENDS - STATS TRACKER</title>
   <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
-  <main class="app">
-    <header>
-      <div class="logo">APEX<span>.</span></div>
-      <p>SEASON TRACKER</p>
-    </header>
+  <header class="header">
+    <div class="logo">APEX <span>LEGENDS</span></div>
+    <p class="subtitle">SEASON STATS TRACKER</p>
+  </header>
 
-    <section class="hero">
-      <p class="sub">TRACK YOUR LEGACY</p>
-      <h1>SEASON <span>RECORD</span></h1>
-      <p>シーズンの戦績を記録しよう。</p>
-    </section>
-
-    <section class="panel">
-      <h2>MODE SELECT</h2>
-      <select id="mode">
-        <option value="RANKED">ランク</option>
-        <option value="CASUAL">カジュアル</option>
-      </select>
-      <input id="season" value="シーズン 1 〜" placeholder="シーズン">
-    </section>
-
-    <section class="panel">
-      <h2>MATCH DATA</h2>
-      <form id="matchForm">
-        <input type="date" id="date" required>
-        <input type="text" id="legend" placeholder="レジェンド">
-        <input type="number" id="place" placeholder="順位" min="1" max="20" required>
-        <input type="number" id="kills" placeholder="キル" min="0" required>
-        <input type="number" id="assists" placeholder="アシスト" min="0">
-        <input type="number" id="damage" placeholder="ダメージ" min="0" required>
-        <button type="submit">＋ 戦績を追加</button>
-      </form>
-    </section>
-
-    <section class="records">
-      <h2>MATCH LOG</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>DATE</th>
-              <th>LEGEND</th>
-              <th>PLACE</th>
-              <th>K</th>
-              <th>A</th>
-              <th>DAMAGE</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="records"></tbody>
-        </table>
+  <main class="container">
+    <section class="toolbar">
+      <div>
+        <label for="mode">GAME MODE</label>
+        <select id="mode">
+          <option value="ranked">RANKED</option>
+          <option value="casual">CASUAL</option>
+        </select>
       </div>
+      <button id="addSeason" class="add-season">＋ シーズン追加</button>
     </section>
 
-    <section class="share">
-      <h2>SHARE YOUR RESULT</h2>
-      <button id="download">画像を保存</button>
-      <button id="post">𝕏 Xでポスト</button>
-    </section>
-
-    <footer>APEX SEASON TRACKER / UNOFFICIAL FAN TOOL</footer>
+    <section id="seasonList" class="season-grid"></section>
+    <p class="footnote">※ 成績はこのブラウザに自動保存されます。</p>
   </main>
 
-  <div id="capture">
-    <div id="shareCard">
-      <h1>APEX<span>.</span></h1>
-      <p id="shareMode">RANKED</p>
-      <h2>MY SEASON<br><span>RECORD</span></h2>
-      <p id="shareSeason"></p>
-      <div class="stats">
-        <div><small>MATCHES</small><strong id="totalMatches">0</strong></div>
-        <div><small>KILLS</small><strong id="totalKills">0</strong></div>
-        <div><small>DAMAGE</small><strong id="totalDamage">0</strong></div>
-      </div>
-      <div id="shareRecords"></div>
-      <p class="bottom">DROP IN. FIGHT ON.</p>
-    </div>
-  </div>
+  <script>
+    const STORAGE_KEY = "apexSeasonStats_v1";
 
-<script>
-const $ = id => document.getElementById(id);
-const data = [];
+    const defaultSeasons = [
+      { id: 1, name: "S1", splits: { 1: { ranked: [], casual: [], rank: "未設定" }, 2: { ranked: [], casual: [], rank: "未設定" } } },
+      { id: 2, name: "S2", splits: { 1: { ranked: [], casual: [], rank: "未設定" }, 2: { ranked: [], casual: [], rank: "未設定" } } },
+      { id: 3, name: "S3", splits: { 1: { ranked: [], casual: [], rank: "未設定" }, 2: { ranked: [], casual: [], rank: "未設定" } } }
+    ];
 
-$("date").value = new Date().toISOString().slice(0,10);
+    function loadSeasons() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return Array.isArray(saved) ? saved : structuredClone(defaultSeasons);
+      } catch {
+        return structuredClone(defaultSeasons);
+      }
+    }
 
-function esc(s) {
-  return String(s).replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  }[c]));
-}
+    let seasons = loadSeasons();
+    let mode = "ranked";
+    let nextId = Math.max(0, ...seasons.map(s => Number(s.id) || 0)) + 1;
 
-function render() {
-  $("records").innerHTML = data.map((r,i) => `
-    <tr>
-      <td>${i+1}</td>
-      <td>${esc(r.date)}</td>
-      <td>${esc(r.legend || "—")}</td>
-      <td>#${r.place}</td>
-      <td>${r.kills}</td>
-      <td>${r.assists}</td>
-      <td>${r.damage.toLocaleString()}</td>
-      <td><button onclick="removeRecord(${i})">×</button></td>
-    </tr>
-  `).join("");
+    const seasonList = document.getElementById("seasonList");
+    const modeSelect = document.getElementById("mode");
 
-  $("totalMatches").textContent = data.length;
-  $("totalKills").textContent = data.reduce((a,r)=>a+r.kills,0);
-  $("totalDamage").textContent = data.reduce((a,r)=>a+r.damage,0).toLocaleString();
+    function save() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(seasons));
+    }
 
-  $("shareMode").textContent = $("mode").value;
-  $("shareSeason").textContent = $("season").value;
+    function escapeHTML(value) {
+      return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#039;"
+      })[char]);
+    }
 
-  $("shareRecords").innerHTML = data.slice(0,12).map(r => `
-    <div class="share-row">
-      <span>${esc(r.date)} / ${esc(r.legend || "—")}</span>
-      <b>#${r.place}</b>
-      <span>${r.kills}K / ${r.assists}A</span>
-      <span>${r.damage.toLocaleString()} DMG</span>
-    </div>
-  `).join("");
-}
+    function getStats(matches) {
+      const totalKills = matches.reduce((sum, m) => sum + Number(m.kills || 0), 0);
+      const totalDeaths = matches.reduce((sum, m) => sum + Number(m.deaths || 0), 0);
+      const totalDamage = matches.reduce((sum, m) => sum + Number(m.damage || 0), 0);
+      const maxDamage = matches.length
+        ? Math.max(...matches.map(m => Number(m.damage || 0)))
+        : 0;
 
-function removeRecord(i) {
-  data.splice(i,1);
-  render();
-}
+      return {
+        matches: matches.length,
+        maxDamage,
+        avgDamage: matches.length ? Math.round(totalDamage / matches.length) : 0,
+        kd: totalDeaths === 0
+          ? (totalKills > 0 ? "∞" : "0.00")
+          : (totalKills / totalDeaths).toFixed(2)
+      };
+    }
 
-$("matchForm").addEventListener("submit", e => {
-  e.preventDefault();
+    function getSplit(season, splitNo) {
+      if (!season.splits) season.splits = {};
+      if (!season.splits[splitNo]) {
+        season.splits[splitNo] = {
+          ranked: [], casual: [], rank: "未設定"
+        };
+      }
+      const split = season.splits[splitNo];
+      if (!Array.isArray(split.ranked)) split.ranked = [];
+      if (!Array.isArray(split.casual)) split.casual = [];
+      if (!split.rank) split.rank = "未設定";
+      return split;
+    }
 
-  const r = {
-    date: $("date").value,
-    legend: $("legend").value.trim(),
-    place: Number($("place").value),
-    kills: Number($("kills").value),
-    assists: Number($("assists").value || 0),
-    damage: Number($("damage").value)
-  };
+    function statBox(label, value) {
+      return `
+        <div class="stat">
+          <span class="stat-label">${label}</span>
+          <strong>${value}</strong>
+        </div>`;
+    }
 
-  if(r.place < 1 || r.place > 20 || r.kills < 0 || r.assists < 0 || r.damage < 0) {
-    alert("入力内容を確認してください");
-    return;
-  }
+    function render() {
+      const visibleSeasons = seasons.slice(-3).reverse();
 
-  data.unshift(r);
-  $("matchForm").reset();
-  $("date").value = new Date().toISOString().slice(0,10);
-  render();
-});
+      seasonList.innerHTML = visibleSeasons.map(season => {
+        const splitHTML = [1, 2].map(splitNo => {
+          const split = getSplit(season, splitNo);
+          const matches = split[mode];
+          const stats = getStats(matches);
 
-$("mode").addEventListener("change",render);
-$("season").addEventListener("input",render);
+          return `
+            <section class="split-card">
+              <div class="split-heading">
+                <h3>SPLIT ${splitNo}</h3>
+                <span class="match-count">${stats.matches} MATCHES</span>
+              </div>
 
-$("download").addEventListener("click", async () => {
-  const canvas = await html2canvas($("shareCard"), {
-    backgroundColor:"#0b101b",
-    scale:2
-  });
-  const a = document.createElement("a");
-  a.download = "apex-season-record.png";
-  a.href = canvas.toDataURL("image/png");
-  a.click();
-});
+              ${mode === "ranked" ? `
+                <div class="rank-area">
+                  <label>到達ランク</label>
+                  <select class="rank-select"
+                    data-season="${season.id}"
+                    data-split="${splitNo}">
+                    ${["未設定","ブロンズ","シルバー","ゴールド","プラチナ","ダイヤモンド","マスター","プレデター"].map(rank =>
+                      `<option value="${rank}" ${split.rank === rank ? "selected" : ""}>${rank}</option>`
+                    ).join("")}
+                  </select>
+                </div>
+              ` : ""}
 
-$("post").addEventListener("click", () => {
-  const kills = data.reduce((a,r)=>a+r.kills,0);
-  const damage = data.reduce((a,r)=>a+r.damage,0);
-  const mode = $("mode").value === "RANKED" ? "ランク" : "カジュアル";
-  const text = `APEX ${$("season").value} / ${mode}\n${data.length}試合 | ${kills}キル | ${damage}ダメージ\n#ApexLegends #APEX戦績`;
-  window.open(
-    "https://twitter.com/intent/tweet?text="+encodeURIComponent(text),
-    "_blank"
-  );
-});
+              <div class="stats-grid">
+                ${statBox("最高ダメージ", stats.maxDamage.toLocaleString())}
+                ${statBox("平均ダメージ", stats.avgDamage.toLocaleString())}
+                ${statBox("K / D", stats.kd)}
+              </div>
 
-render();
-</script>
+              <form class="match-form"
+                data-season="${season.id}"
+                data-split="${splitNo}">
+                <div class="form-title">試合結果を追加</div>
+                <div class="input-grid">
+                  <input name="date" type="date" aria-label="日付" required>
+                  <input name="kills" type="number" min="0" placeholder="キル" required>
+                  <input name="deaths" type="number" min="0" placeholder="デス" required>
+                  <input name="damage" type="number" min="0" placeholder="ダメージ" required>
+                </div>
+                <button class="add-match" type="submit">＋ 試合を記録</button>
+              </form>
+
+              <details class="history">
+                <summary>試合履歴を見る（${matches.length}件）</summary>
+                ${matches.length ? `
+                  <div class="history-list">
+                    ${matches.map((m, index) => `
+                      <div class="history-row">
+                        <span>${escapeHTML(m.date)}</span>
+                        <span>K ${m.kills} / D ${m.deaths}</span>
+                        <strong>${Number(m.damage).toLocaleString()} DMG</strong>
+                        <button class="delete-match"
+                          data-season="${season.id}"
+                          data-split="${splitNo}"
+                          data-index="${index}"
+                          aria-label="試合を削除">×</button>
+                      </div>
+                    `).join("")}
+                  </div>
+                ` : `<p class="empty">まだ試合記録がありません。</p>`}
+              </details>
+            </section>`;
+        }).join("");
+
+        return `
+          <article class="season-card" id="season-${season.id}">
+            <div class="season-heading">
+              <div>
+                <span class="season-kicker">SEASON</span>
+                <h2>${escapeHTML(season.name)}</h2>
+              </div>
+              <span class="mode-tag">${mode === "ranked" ? "RANKED" : "CASUAL"}</span>
+            </div>
+
+            <div class="split-list">${splitHTML}</div>
+
+            <div class="season-actions">
+              <button class="export-button" data-season="${season.id}">画像を保存</button>
+              <button class="share-button" data-season="${season.id}">Xに投稿</button>
+            </div>
+          </article>`;
+      }).join("");
+
+      if (!visibleSeasons.length) {
+        seasonList.innerHTML = `<p class="empty">シーズンを追加してください。</p>`;
+      }
+    }
+
+    modeSelect.addEventListener("change", event => {
+      mode = event.target.value;
+      render();
+    });
+
+    document.getElementById("addSeason").addEventListener("click", () => {
+      const name = `S${nextId}`;
+      seasons.push({
+        id: nextId++,
+        name,
+        splits: {
+          1: { ranked: [], casual: [], rank: "未設定" },
+          2: { ranked: [], casual: [], rank: "未設定" }
+        }
+      });
+      save();
+      render();
+    });
+
+    seasonList.addEventListener("submit", event => {
+      if (!event.target.matches(".match-form")) return;
+      event.preventDefault();
+
+      const form = event.target;
+      const seasonId = Number(form.dataset.season);
+      const splitNo = Number(form.dataset.split);
+      const season = seasons.find(s => s.id === seasonId);
+      if (!season) return;
+
+      const data = new FormData(form);
+      const match = {
+        date: data.get("date"),
+        kills: Number(data.get("kills")),
+        deaths: Number(data.get("deaths")),
+        damage: Number(data.get("damage"))
+      };
+
+      const split = getSplit(season, splitNo);
+      split[mode].unshift(match);
+      save();
+      render();
+    });
+
+    seasonList.addEventListener("change", event => {
+      if (!event.target.matches(".rank-select")) return;
+      const season = seasons.find(s => s.id === Number(event.target.dataset.season));
+      if (!season) return;
+
+      const split = getSplit(season, Number(event.target.dataset.split));
+      split.rank = event.target.value;
+      save();
+    });
+
+    seasonList.addEventListener("click", async event => {
+      const deleteButton = event.target.closest(".delete-match");
+      if (deleteButton) {
+        const season = seasons.find(s => s.id === Number(deleteButton.dataset.season));
+        if (!season) return;
+        const split = getSplit(season, Number(deleteButton.dataset.split));
+        const index = Number(deleteButton.dataset.index);
+        split[mode].splice(index, 1);
+        save();
+        render();
+        return;
+      }
+
+      const exportButton = event.target.closest(".export-button");
+      if (exportButton) {
+        const seasonId = Number(exportButton.dataset.season);
+        const card = document.getElementById(`season-${seasonId}`);
+        if (!card || !window.html2canvas) {
+          alert("画像出力ライブラリを読み込めませんでした。");
+          return;
+        }
+
+        const canvas = await html2canvas(card, {
+          backgroundColor: "#0b111b",
+          scale: 2
+        });
+        const link = document.createElement("a");
+        link.download = `APEX-${seasons.find(s => s.id === seasonId)?.name || "stats"}.png`;
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+        return;
+      }
+
+      const shareButton = event.target.closest(".share-button");
+      if (shareButton) {
+        const season = seasons.find(s => s.id === Number(shareButton.dataset.season));
+        if (!season) return;
+
+        const lines = [ `APEX LEGENDS ${season.name} ${mode === "ranked" ? "RANKED" : "CASUAL"}` ];
+        [1, 2].forEach(splitNo => {
+          const split = getSplit(season, splitNo);
+          const stats = getStats(split[mode]);
+          lines.push(
+            `Split ${splitNo}: ${mode === "ranked" ? split.rank + " / " : ""}最高DMG ${stats.maxDamage} / 平均DMG ${stats.avgDamage} / K/D ${stats.kd}`
+          );
+        });
+        lines.push("#ApexLegends");
+
+        const url = "https://twitter.com/intent/tweet?text=" +
+          encodeURIComponent(lines.join("\n"));
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+    });
+
+    render();
+  </script>
 </body>
 </html>
