@@ -1,35 +1,224 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
- 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Apex Stats Card</title>
+
+<style>
+body {
+    background: #222;
+    color: white;
+    font-family: sans-serif;
+    padding: 20px;
+}
+
+.input-area {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 250px;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+select, input {
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: none;
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px;
+    background: #e84141;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ff5555;
+}
+
+canvas {
+    display: block;
+    margin-top: 25px;
+    max-width: 100%;
+    height: auto;
+}
+</style>
 </head>
+
 <body>
 
- <select name="season">
-  <option value="31">S31</option>
-  <option value="30">S30</option>
-  <option value="29">S29</option>
-  <option value="28">S28</option>
-  <option value="27">S27</option>
-  <option value="26">S26</option>
-  <option value="25">S25</option>
-</select>
- 
-<select name="rank">
-  <option value="Rookie">ルーキー</option>
-  <option value="Bronze" selected>ブロンズ</option>
-  <option value="Silver">シルバー</option>
-  <option value="Gold">ゴールド</option>
-  <option value="Platinum">プラチナ</option>
-  <option value="Diamond">ダイヤ</option>
-  <option value="Master">マスター</option>
-  <option value="Apex Predator">プレデター</option>
-</select>
+<h2>Apex 戦績入力</h2>
 
-<label>High DMG</label>
-<input type="text" placeholder="0000" style="width: 200px;">
+<div class="input-area">
 
+    <div class="input-group">
+        <label>Name</label>
+        <input type="text" id="playerName" placeholder="プレイヤー名">
+    </div>
 
- 
+    <div class="input-group">
+        <label>Season</label>
+        <select id="season">
+            <option value="31">S31</option>
+            <option value="30">S30</option>
+            <option value="29">S29</option>
+            <option value="28">S28</option>
+            <option value="27">S27</option>
+            <option value="26">S26</option>
+            <option value="25">S25</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>Rank</label>
+        <select id="rank">
+            <option value="Rookie">ルーキー</option>
+            <option value="Bronze" selected>ブロンズ</option>
+            <option value="Silver">シルバー</option>
+            <option value="Gold">ゴールド</option>
+            <option value="Platinum">プラチナ</option>
+            <option value="Diamond">ダイヤ</option>
+            <option value="Master">マスター</option>
+            <option value="Apex Predator">プレデター</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label>High DMG</label>
+        <input type="number" id="highDmg" placeholder="0000">
+    </div>
+
+    <div class="input-group">
+        <label>AVG DMG</label>
+        <input type="number" id="avgDmg" placeholder="0000">
+    </div>
+
+    <div class="input-group">
+        <label>K/D</label>
+        <input type="number" id="kd" placeholder="00.0" step="0.1">
+    </div>
+
+</div>
+
+<button onclick="generateImage()">画像を生成</button>
+
+<canvas id="canvas" width="800" height="450"></canvas>
+
+<script>
+function generateImage() {
+
+    const playerName =
+        document.getElementById("playerName").value || "Player";
+
+    const season = document.getElementById("season").value;
+    const rank = document.getElementById("rank").value;
+    const highDmg = document.getElementById("highDmg").value || "0";
+    const avgDmg = document.getElementById("avgDmg").value || "0";
+    const kd = document.getElementById("kd").value || "0.0";
+
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    // ランクカラー
+    const rankColors = {
+        "Rookie": "#A0A0A0",
+        "Bronze": "#CD7F32",
+        "Silver": "#C0C0C0",
+        "Gold": "#FFD700",
+        "Platinum": "#4DD0E1",
+        "Diamond": "#3988FF",
+        "Master": "#B266FF",
+        "Apex Predator": "#FF3030"
+    };
+
+    const rankColor = rankColors[rank] || "#FFFFFF";
+
+    // 背景
+    ctx.fillStyle = "#171923";
+    ctx.fillRect(0, 0, 800, 450);
+
+    // アクセントライン
+    ctx.fillStyle = rankColor;
+    ctx.fillRect(0, 0, 800, 12);
+
+    // タイトル
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 42px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText("APEX LEGENDS", 40, 75);
+
+    // Player Name
+    ctx.save();
+
+    ctx.shadowColor = rankColor;
+    ctx.shadowBlur = 15;
+
+    ctx.fillStyle = "#FFFFFF";
+    ctx.font = "bold 48px sans-serif";
+    ctx.textAlign = "left";
+    ctx.fillText(playerName, 40, 155, 700);
+
+    ctx.restore();
+
+    // Season
+    ctx.fillStyle = "#aaaaaa";
+    ctx.font = "28px sans-serif";
+    ctx.fillText("SEASON", 50, 220);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 38px sans-serif";
+    ctx.fillText("S" + season, 50, 270);
+
+    // Rank
+    ctx.fillStyle = "#aaaaaa";
+    ctx.font = "28px sans-serif";
+    ctx.fillText("RANK", 300, 220);
+
+    ctx.fillStyle = rankColor;
+    ctx.font = "bold 38px sans-serif";
+    ctx.fillText(rank, 300, 270);
+
+    // 数値データ
+    const stats = [
+        ["HIGH DMG", highDmg],
+        ["AVG DMG", avgDmg],
+        ["K/D", kd]
+    ];
+
+    stats.forEach((stat, i) => {
+        const x = 50 + i * 250;
+
+        ctx.fillStyle = "#303747";
+        ctx.fillRect(x, 310, 210, 120);
+
+        ctx.fillStyle = "#aaaaaa";
+        ctx.font = "22px sans-serif";
+        ctx.fillText(stat[0], x + 20, 350);
+
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 42px sans-serif";
+        ctx.fillText(stat[1], x + 20, 405);
+    });
+
+    // PNGダウンロード
+    const link = document.createElement("a");
+    link.download = "apex-stats.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+}
+</script>
+
 </body>
 </html>
