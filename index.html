@@ -3,519 +3,413 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#070d18">
   <title>APEX LEGENDS | Player Record</title>
   <link rel="stylesheet" href="style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
+<main class="app">
 
-  <main class="app">
+  <header class="app-header">
+    <div class="apex-mark">A</div>
+    <div>
+      <p class="eyebrow">LEGENDARY PLAYER DATABASE</p>
+      <h1>APEX <span>LEGENDS</span></h1>
+      <p class="header-subtitle">PLAYER RECORD SYSTEM</p>
+    </div>
+  </header>
 
-    <header class="app-header">
-      <div class="apex-mark">A</div>
+  <section class="panel">
+    <div class="section-heading">
       <div>
-        <p class="eyebrow">LEGENDARY PLAYER DATABASE</p>
-        <h1>APEX <span>LEGENDS</span></h1>
-        <p class="header-subtitle">PLAYER RECORD SYSTEM</p>
+        <p class="section-kicker">01 / RECORD INPUT</p>
+        <h2>戦績入力</h2>
       </div>
-    </header>
+      <span class="live-label">● LIVE INPUT</span>
+    </div>
 
-    <!-- 成績入力 -->
-    <section class="panel input-panel">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">01 / RECORD INPUT</p>
-          <h2>戦績入力</h2>
+    <div class="season-name-area">
+      <label for="seasonName">シーズン名</label>
+      <input id="seasonName" type="text" placeholder="例：S26" maxlength="30">
+    </div>
+
+    <div class="mode-tabs">
+      <button class="mode-tab active" data-mode="RANKED" type="button">RANKED</button>
+      <button class="mode-tab" data-mode="CASUAL" type="button">CASUAL</button>
+    </div>
+
+    <p class="input-note" id="modeNote">ランクの成績を入力してください</p>
+
+    <div class="input-card">
+      <div class="input-card-title">SEASON PERFORMANCE</div>
+
+      <div class="field rank-field" id="rankField">
+        <label for="rank">到達ランク</label>
+        <select id="rank">
+          <option value="">選択してください</option>
+          <option>ブロンズ</option>
+          <option>シルバー</option>
+          <option>ゴールド</option>
+          <option>プラチナ</option>
+          <option>ダイヤモンド</option>
+          <option>マスター</option>
+          <option>プレデター</option>
+        </select>
+      </div>
+
+      <div class="stats-inputs">
+        <div class="field">
+          <label for="maxDamage">最高ダメージ</label>
+          <input id="maxDamage" type="number" min="0" placeholder="2500">
         </div>
-        <span class="live-label">● LIVE INPUT</span>
+        <div class="field">
+          <label for="avgDamage">平均ダメージ</label>
+          <input id="avgDamage" type="number" min="0" placeholder="850">
+        </div>
+        <div class="field">
+          <label for="kd">K/D</label>
+          <input id="kd" type="number" min="0" step="0.01" placeholder="2.50">
+        </div>
       </div>
+    </div>
 
-      <div class="season-name-area">
-        <label for="seasonName">シーズン名</label>
-        <input id="seasonName" type="text" placeholder="例：S26" maxlength="30">
+    <button class="save-button" id="saveButton" type="button">
+      ▣ シーズンを保存する
+    </button>
+    <p class="save-message" id="saveMessage" aria-live="polite"></p>
+  </section>
+
+  <section class="panel">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">02 / PLAYER PROFILE</p>
+        <h2>プロフィール出力</h2>
       </div>
+      <span class="record-count" id="recordCount">0 RECORDS</span>
+    </div>
 
-      <!-- ランク / カジュアル タブ -->
-      <div class="mode-tabs" role="tablist" aria-label="ゲームモード">
-        <button class="mode-tab active" data-mode="RANKED" type="button">
-          RANKED
-        </button>
-        <button class="mode-tab" data-mode="CASUAL" type="button">
-          CASUAL
-        </button>
-      </div>
+    <p class="output-description">
+      直近3シーズンの成績を正方形の画像にまとめます。
+    </p>
 
-      <p class="input-note" id="modeNote">
-        ランクの成績を入力してください
-      </p>
-
-      <!-- Split入力 -->
-      <div class="split-inputs">
-
-        <section class="split-input-card">
-          <div class="split-title">
-            <span class="split-number">01</span>
-            <h3>SPLIT 1</h3>
-          </div>
-
-          <div class="input-fields">
-            <div class="field rank-field">
-              <label for="s1Rank">ランク</label>
-              <select id="s1Rank">
-                <option value="">未設定</option>
-                <option>ブロンズ</option>
-                <option>シルバー</option>
-                <option>ゴールド</option>
-                <option>プラチナ</option>
-                <option>ダイヤモンド</option>
-                <option>マスター</option>
-                <option>プレデター</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="s1Max">最高ダメージ</label>
-              <input id="s1Max" type="number" min="0" placeholder="2500">
-            </div>
-
-            <div class="field">
-              <label for="s1Avg">平均ダメージ</label>
-              <input id="s1Avg" type="number" min="0" placeholder="850">
-            </div>
-
-            <div class="field">
-              <label for="s1Kd">K/D</label>
-              <input id="s1Kd" type="number" min="0" step="0.01" placeholder="2.50">
-            </div>
-          </div>
-        </section>
-
-        <section class="split-input-card">
-          <div class="split-title">
-            <span class="split-number">02</span>
-            <h3>SPLIT 2</h3>
-          </div>
-
-          <div class="input-fields">
-            <div class="field rank-field">
-              <label for="s2Rank">ランク</label>
-              <select id="s2Rank">
-                <option value="">未設定</option>
-                <option>ブロンズ</option>
-                <option>シルバー</option>
-                <option>ゴールド</option>
-                <option>プラチナ</option>
-                <option>ダイヤモンド</option>
-                <option>マスター</option>
-                <option>プレデター</option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="s2Max">最高ダメージ</label>
-              <input id="s2Max" type="number" min="0" placeholder="2400">
-            </div>
-
-            <div class="field">
-              <label for="s2Avg">平均ダメージ</label>
-              <input id="s2Avg" type="number" min="0" placeholder="820">
-            </div>
-
-            <div class="field">
-              <label for="s2Kd">K/D</label>
-              <input id="s2Kd" type="number" min="0" step="0.01" placeholder="2.30">
-            </div>
-          </div>
-        </section>
-
-      </div>
-
-      <button class="save-button" id="saveButton" type="button">
-        <span>▣</span> シーズンを保存する
+    <div class="action-buttons">
+      <button id="downloadButton" class="download-button" type="button">
+        ↓ PNG画像を保存
       </button>
-      <p class="save-message" id="saveMessage" aria-live="polite"></p>
-    </section>
+      <button id="shareButton" class="share-button" type="button">
+        𝕏 Xに投稿
+      </button>
+    </div>
 
-    <!-- 保存済み記録 -->
-    <section class="panel records-panel">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">02 / PLAYER PROFILE</p>
-          <h2>プロフィール出力</h2>
+    <div class="preview-wrap">
+      <div id="profileCard" class="profile-card">
+        <div class="profile-top">
+          <div class="profile-logo">A</div>
+          <div class="profile-title">
+            <p>APEX LEGENDS</p>
+            <h2>PLAYER PROFILE</h2>
+            <span>SEASON RECORD COLLECTION</span>
+          </div>
+          <div class="profile-decoration">◆</div>
         </div>
-        <span class="record-count" id="recordCount">0 RECORDS</span>
-      </div>
 
-      <p class="output-description">
-        直近3シーズンの成績を正方形の画像にまとめます。
-      </p>
+        <div class="profile-divider"></div>
 
-      <div class="action-buttons">
-        <button id="downloadButton" class="download-button" type="button">
-          <span>↓</span> PNG画像を保存
-        </button>
-        <button id="shareButton" class="share-button" type="button">
-          <span>𝕏</span> Xに投稿
-        </button>
-      </div>
-
-      <div class="preview-wrap">
-        <div id="profileCard" class="profile-card">
-
-          <div class="profile-top">
-            <div class="profile-logo">A</div>
-            <div class="profile-title">
-              <p>APEX LEGENDS</p>
-              <h2>PLAYER PROFILE</h2>
-              <span>SEASON RECORD COLLECTION</span>
-            </div>
-            <div class="profile-decoration">◆</div>
+        <div id="profileSeasons" class="profile-seasons">
+          <div class="empty-profile">
+            <span>APEX</span>
+            <p>シーズンを保存すると<br>ここに成績が表示されます</p>
           </div>
+        </div>
 
-          <div class="profile-divider"></div>
-
-          <div id="profileSeasons" class="profile-seasons">
-            <div class="empty-profile">
-              <span>APEX</span>
-              <p>シーズンを保存すると<br>ここに成績が表示されます</p>
-            </div>
-          </div>
-
-          <div class="profile-footer">
-            <span>YOUR LEGEND.</span>
-            <span class="footer-line"></span>
-            <span>YOUR RECORD.</span>
-          </div>
-
-          <div class="profile-corner corner-tl"></div>
-          <div class="profile-corner corner-br"></div>
+        <div class="profile-footer">
+          <span>YOUR LEGEND.</span>
+          <span class="footer-line"></span>
+          <span>YOUR RECORD.</span>
         </div>
       </div>
+    </div>
 
-      <p class="image-note">
-        ※ 画像は正方形で保存されます。Xに投稿するときは保存した画像を添付してください。
-      </p>
-    </section>
+    <p class="image-note">
+      ※ Xに画像を投稿する場合は、保存したPNGを手動で添付してください。
+    </p>
+  </section>
 
-    <!-- 保存済みシーズン一覧 -->
-    <section class="panel history-panel">
-      <div class="section-heading">
-        <div>
-          <p class="section-kicker">03 / DATA ARCHIVE</p>
-          <h2>保存データ</h2>
-        </div>
+  <section class="panel">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">03 / DATA ARCHIVE</p>
+        <h2>保存データ</h2>
       </div>
-      <div id="historyList" class="history-list">
-        <p class="no-history">まだ保存された記録はありません。</p>
-      </div>
-    </section>
+    </div>
+    <div id="historyList" class="history-list"></div>
+  </section>
 
-    <footer class="app-footer">
-      APEX LEGENDS PLAYER RECORD SYSTEM
-    </footer>
-
-  </main>
+  <footer class="app-footer">APEX LEGENDS PLAYER RECORD SYSTEM</footer>
+</main>
 
 <script>
-  const STORAGE_KEY = "apexPlayerRecords_v3";
+const STORAGE_KEY = "apexPlayerRecords_v4";
+let records = [];
+let currentMode = "RANKED";
 
-  let records = [];
-  let currentMode = "RANKED";
+const $ = id => document.getElementById(id);
 
-  const $ = (id) => document.getElementById(id);
+// 保存データ読み込み
+try {
+  records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+  if (!Array.isArray(records)) records = [];
+} catch {
+  records = [];
+}
 
-  // 保存データ読み込み
-  try {
-    records = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-    if (!Array.isArray(records)) records = [];
-  } catch (error) {
-    records = [];
-  }
+// モード切り替え
+document.querySelectorAll(".mode-tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    currentMode = tab.dataset.mode;
 
-  // ゲームモード切り替え
-  document.querySelectorAll(".mode-tab").forEach((tab) => {
-    tab.addEventListener("click", () => {
-      currentMode = tab.dataset.mode;
-
-      document.querySelectorAll(".mode-tab").forEach((item) => {
-        item.classList.toggle("active", item === tab);
-      });
-
-      document.querySelectorAll(".rank-field").forEach((field) => {
-        field.classList.toggle("hidden", currentMode === "CASUAL");
-      });
-
-      $("modeNote").textContent =
-        currentMode === "RANKED"
-          ? "ランクの成績を入力してください"
-          : "カジュアルの成績を入力してください";
+    document.querySelectorAll(".mode-tab").forEach(item => {
+      item.classList.toggle("active", item === tab);
     });
+
+    $("rankField").classList.toggle("hidden", currentMode === "CASUAL");
+
+    $("modeNote").textContent = currentMode === "RANKED"
+      ? "ランクの成績を入力してください"
+      : "カジュアルの成績を入力してください";
   });
+});
 
-  // 入力値取得
-  function getSplit(prefix) {
-    return {
-      rank: $(prefix + "Rank").value,
-      max: $(prefix + "Max").value,
-      avg: $(prefix + "Avg").value,
-      kd: $(prefix + "Kd").value
-    };
+// 入力値取得
+function getInput() {
+  return {
+    name: $("seasonName").value.trim(),
+    mode: currentMode,
+    rank: currentMode === "RANKED" ? $("rank").value : "",
+    max: $("maxDamage").value,
+    avg: $("avgDamage").value,
+    kd: $("kd").value,
+    updatedAt: Date.now()
+  };
+}
+
+// 保存
+$("saveButton").addEventListener("click", () => {
+  const record = getInput();
+
+  if (!record.name) {
+    showMessage("シーズン名を入力してください。", true);
+    $("seasonName").focus();
+    return;
   }
 
-  // 保存
-  $("saveButton").addEventListener("click", () => {
-    const name = $("seasonName").value.trim();
+  const index = records.findIndex(
+    item => item.name.toLowerCase() === record.name.toLowerCase()
+  );
 
-    if (!name) {
-      showMessage("シーズン名を入力してください。", true);
-      $("seasonName").focus();
-      return;
-    }
+  if (index !== -1) records.splice(index, 1);
+  records.push(record);
 
-    const record = {
-      name,
-      mode: currentMode,
-      split1: getSplit("s1"),
-      split2: getSplit("s2"),
-      updatedAt: Date.now()
-    };
-
-    const existingIndex = records.findIndex(
-      item => item.name.toLowerCase() === name.toLowerCase()
-    );
-
-    if (existingIndex !== -1) {
-      records.splice(existingIndex, 1);
-    }
-
-    records.push(record);
-
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-    } catch (error) {
-      showMessage("保存できませんでした。ブラウザの保存容量を確認してください。", true);
-      return;
-    }
-
-    renderAll();
-    showMessage(existingIndex !== -1
-      ? "同じシーズンの記録を更新しました！"
-      : "シーズンを保存しました！");
-  });
-
-  function showMessage(message, isError = false) {
-    const element = $("saveMessage");
-    element.textContent = message;
-    element.classList.toggle("error", isError);
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+  } catch {
+    showMessage("保存できませんでした。保存容量を確認してください。", true);
+    return;
   }
 
-  // HTML表示用エスケープ
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    })[char]);
+  renderAll();
+  showMessage(index !== -1
+    ? "シーズンの記録を更新しました！"
+    : "シーズンを保存しました！");
+});
+
+function showMessage(message, error = false) {
+  $("saveMessage").textContent = message;
+  $("saveMessage").classList.toggle("error", error);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#039;"
+  })[c]);
+}
+
+function valueOrDash(value) {
+  return value === "" || value == null ? "—" : escapeHTML(value);
+}
+
+function rankClass(rank) {
+  return ({
+    "ブロンズ": "bronze",
+    "シルバー": "silver",
+    "ゴールド": "gold",
+    "プラチナ": "platinum",
+    "ダイヤモンド": "diamond",
+    "マスター": "master",
+    "プレデター": "predator"
+  })[rank] || "unranked";
+}
+
+// プロフィール画像を描画
+function renderProfile() {
+  const latest = records.slice(-3).reverse();
+  const container = $("profileSeasons");
+  container.innerHTML = "";
+
+  if (latest.length === 0) {
+    container.innerHTML = `
+      <div class="empty-profile">
+        <span>APEX</span>
+        <p>シーズンを保存すると<br>ここに成績が表示されます</p>
+      </div>`;
+    return;
   }
 
-  function displayValue(value, suffix = "") {
-    if (value === "" || value === null || value === undefined) {
-      return "—";
-    }
-    return escapeHTML(value) + suffix;
-  }
+  latest.forEach(record => {
+    const season = document.createElement("div");
+    season.className = "profile-season";
 
-  function rankClass(rank) {
-    const map = {
-      "ブロンズ": "bronze",
-      "シルバー": "silver",
-      "ゴールド": "gold",
-      "プラチナ": "platinum",
-      "ダイヤモンド": "diamond",
-      "マスター": "master",
-      "プレデター": "predator"
-    };
-    return map[rank] || "unranked";
-  }
-
-  // Split表示
-  function renderSplit(split, splitName, mode) {
-    const rankHTML = mode === "RANKED"
-      ? `<div class="output-rank ${rankClass(split.rank)}">
-           <span class="rank-symbol">◆</span>
-           <span>${displayValue(split.rank)}</span>
+    const rankHTML = record.mode === "RANKED"
+      ? `<div class="profile-rank ${rankClass(record.rank)}">
+           <span>◆</span>${valueOrDash(record.rank)}
          </div>`
-      : "";
+      : `<div class="profile-rank casual-rank">CASUAL</div>`;
 
-    return `
-      <div class="output-split">
-        <div class="output-split-title">${splitName}</div>
+    season.innerHTML = `
+      <div class="season-label">
+        <span>SEASON</span>
+        <strong>${escapeHTML(record.name)}</strong>
+        <small>${record.mode === "CASUAL" ? "CASUAL" : "RANKED"}</small>
+      </div>
+
+      <div class="season-data">
         ${rankHTML}
         <div class="output-stats">
           <div class="output-stat">
             <span>最高ダメージ</span>
-            <strong>${displayValue(split.max)}</strong>
+            <strong>${valueOrDash(record.max)}</strong>
           </div>
           <div class="output-stat">
             <span>平均ダメージ</span>
-            <strong>${displayValue(split.avg)}</strong>
+            <strong>${valueOrDash(record.avg)}</strong>
           </div>
           <div class="output-stat">
             <span>K/D</span>
-            <strong>${displayValue(split.kd)}</strong>
+            <strong>${valueOrDash(record.kd)}</strong>
           </div>
         </div>
       </div>
     `;
+
+    container.appendChild(season);
+  });
+}
+
+// 保存データ一覧
+function renderHistory() {
+  const container = $("historyList");
+  container.innerHTML = "";
+  $("recordCount").textContent = records.length + " RECORDS";
+
+  if (records.length === 0) {
+    container.innerHTML = '<p class="no-history">まだ記録はありません。</p>';
+    return;
   }
 
-  // プロフィール画像内の3シーズン表示
-  function renderProfile() {
-    const latest = records.slice(-3).reverse();
+  [...records].reverse().forEach(record => {
+    const item = document.createElement("div");
+    item.className = "history-item";
 
-    $("profileSeasons").innerHTML = "";
+    item.innerHTML = `
+      <div class="history-info">
+        <strong>${escapeHTML(record.name)}</strong>
+        <span>${record.mode === "CASUAL" ? "CASUAL" : "RANKED"}</span>
+      </div>
+      <button class="delete-button" type="button">削除</button>
+    `;
 
-    if (latest.length === 0) {
-      $("profileSeasons").innerHTML = `
-        <div class="empty-profile">
-          <span>APEX</span>
-          <p>シーズンを保存すると<br>ここに成績が表示されます</p>
-        </div>
-      `;
-      return;
-    }
+    item.querySelector(".delete-button").addEventListener("click", () => {
+      if (!confirm(record.name + " の記録を削除しますか？")) return;
 
-    latest.forEach((record, index) => {
-      const season = document.createElement("section");
-      season.className = "profile-season";
-
-      season.innerHTML = `
-        <div class="season-label">
-          <span>SEASON</span>
-          <strong>${escapeHTML(record.name)}</strong>
-          <small>${record.mode === "CASUAL" ? "CASUAL" : "RANKED"}</small>
-        </div>
-        <div class="season-splits">
-          ${renderSplit(record.split1 || {}, "SPLIT 1", record.mode)}
-          ${renderSplit(record.split2 || {}, "SPLIT 2", record.mode)}
-        </div>
-      `;
-
-      $("profileSeasons").appendChild(season);
+      records = records.filter(item => item !== record);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+      renderAll();
     });
+
+    container.appendChild(item);
+  });
+}
+
+function renderAll() {
+  renderProfile();
+  renderHistory();
+}
+
+// PNG保存
+$("downloadButton").addEventListener("click", async () => {
+  if (records.length === 0) {
+    alert("先にシーズンの成績を保存してください。");
+    return;
   }
 
-  // 保存データ一覧
-  function renderHistory() {
-    $("historyList").innerHTML = "";
+  if (typeof html2canvas === "undefined") {
+    alert("画像出力ライブラリを読み込めませんでした。");
+    return;
+  }
 
-    $("recordCount").textContent = records.length + " RECORDS";
+  const button = $("downloadButton");
+  button.disabled = true;
+  button.textContent = "画像を作成中...";
 
-    if (records.length === 0) {
-      $("historyList").innerHTML =
-        '<p class="no-history">まだ保存された記録はありません。</p>';
-      return;
-    }
-
-    [...records].reverse().forEach((record) => {
-      const item = document.createElement("div");
-      item.className = "history-item";
-
-      const modeText = record.mode === "CASUAL" ? "CASUAL" : "RANKED";
-
-      item.innerHTML = `
-        <div class="history-info">
-          <strong>${escapeHTML(record.name)}</strong>
-          <span>${modeText}</span>
-        </div>
-        <button class="delete-button" type="button">削除</button>
-      `;
-
-      item.querySelector(".delete-button").addEventListener("click", () => {
-        if (!confirm(record.name + " の記録を削除しますか？")) return;
-
-        records = records.filter(item => item !== record);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
-        renderAll();
-      });
-
-      $("historyList").appendChild(item);
+  try {
+    const canvas = await html2canvas($("profileCard"), {
+      backgroundColor: "#07101e",
+      scale: 2,
+      logging: false
     });
+
+    const link = document.createElement("a");
+    link.download = "apex-player-profile.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  } catch (error) {
+    alert("画像を保存できませんでした。もう一度お試しください。");
+    console.error(error);
+  } finally {
+    button.disabled = false;
+    button.textContent = "↓ PNG画像を保存";
+  }
+});
+
+// X投稿画面
+$("shareButton").addEventListener("click", () => {
+  const latest = records.slice(-3).reverse();
+
+  if (latest.length === 0) {
+    alert("先にシーズンの成績を保存してください。");
+    return;
   }
 
-  function renderAll() {
-    renderProfile();
-    renderHistory();
-  }
+  const text = latest.map(r =>
+    `${r.name} / ${r.mode === "CASUAL" ? "CASUAL" : "RANKED"} / ${r.rank || "—"}`
+  ).join("\n");
 
-  // PNG画像保存
-  $("downloadButton").addEventListener("click", async () => {
-    const button = $("downloadButton");
+  const message =
+    `APEX LEGENDS PLAYER RECORD\n${text}\n\n#ApexLegends #ApexStats`;
 
-    if (typeof html2canvas === "undefined") {
-      alert("画像出力ライブラリを読み込めませんでした。インターネット接続を確認してください。");
-      return;
-    }
+  window.open(
+    "https://twitter.com/intent/tweet?text=" + encodeURIComponent(message),
+    "_blank",
+    "noopener,noreferrer"
+  );
+});
 
-    button.disabled = true;
-    button.textContent = "画像を作成中...";
-
-    try {
-      const canvas = await html2canvas($("profileCard"), {
-        backgroundColor: "#07101e",
-        scale: 2,
-        useCORS: true,
-        logging: false
-      });
-
-      const link = document.createElement("a");
-      link.download = "apex-player-profile.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
-    } catch (error) {
-      alert("画像を保存できませんでした。もう一度お試しください。");
-      console.error(error);
-    } finally {
-      button.disabled = false;
-      button.innerHTML = "<span>↓</span> PNG画像を保存";
-    }
-  });
-
-  // X投稿画面
-  $("shareButton").addEventListener("click", () => {
-    const latest = records.slice(-3).reverse();
-
-    if (latest.length === 0) {
-      alert("先にシーズンの成績を保存してください。");
-      return;
-    }
-
-    const text = latest.map(record => {
-      const mode = record.mode === "CASUAL" ? "CASUAL" : "RANKED";
-      return `${record.name} / ${mode}`;
-    }).join("\n");
-
-    const message =
-      `APEX LEGENDS PLAYER RECORD\n${text}\n\n#ApexLegends #ApexStats`;
-
-    const url = "https://twitter.com/intent/tweet?text=" +
-      encodeURIComponent(message);
-
-    window.open(url, "_blank", "noopener,noreferrer");
-  });
-
-  // 初期表示
-  document.querySelectorAll(".rank-field").forEach(field => {
-    field.classList.remove("hidden");
-  });
-
-  renderAll();
+// 初期表示
+renderAll();
 </script>
-
 </body>
 </html>
