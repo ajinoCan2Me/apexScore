@@ -1,15 +1,14 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
-
 :root {
-  --bg: #080d15;
-  --panel: #111b29;
-  --panel-light: #19283a;
-  --line: #2b4057;
-  --text: #edf5ff;
-  --muted: #91a6bd;
-  --cyan: #54d9ff;
-  --orange: #ff914d;
+  --bg: #060b14;
+  --panel: #0b1524;
+  --panel-light: #10243a;
+  --cyan: #00d9ff;
+  --cyan-soft: #58eaff;
+  --orange: #ff8128;
+  --white: #f3f8ff;
+  --muted: #8ba2b9;
+  --line: #1b526b;
 }
 
 * {
@@ -18,12 +17,12 @@
 
 body {
   margin: 0;
-  min-height: 100vh;
+  padding: 20px 12px 50px;
   background:
-    radial-gradient(ellipse at 50% 0%, #18334b 0%, transparent 55%),
-    var(--bg);
-  color: var(--text);
-  font-family: 'Noto Sans JP', sans-serif;
+    radial-gradient(ellipse at 50% 0%, #102b48 0%, transparent 55%),
+    linear-gradient(160deg, #050912, #0a1422 55%, #050912);
+  color: var(--white);
+  font-family: "Noto Sans JP", sans-serif;
 }
 
 button,
@@ -32,432 +31,938 @@ select {
   font: inherit;
 }
 
-.header {
-  text-align: center;
-  padding: 35px 16px 25px;
-}
-
-.logo {
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(27px, 5vw, 44px);
-  font-weight: 800;
-  letter-spacing: 4px;
-  color: #fff;
-  text-shadow: 0 0 20px #54d9ff55;
-}
-
-.logo span {
-  color: var(--cyan);
-}
-
-.subtitle {
-  margin: 8px 0 0;
-  color: var(--muted);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 11px;
-  letter-spacing: 5px;
-}
-
-.container {
-  width: min(1500px, 96%);
-  margin: 0 auto 50px;
-}
-
-.toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 15px;
-  margin-bottom: 22px;
-  padding: 18px;
-  background: #101a27dd;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-}
-
-.toolbar label,
-.rank-area label {
-  display: block;
-  margin-bottom: 7px;
-  color: var(--muted);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 10px;
-  letter-spacing: 1px;
-}
-
-select,
-input {
-  min-width: 0;
-  color: var(--text);
-  background: #0b1420;
-  border: 1px solid var(--line);
-  border-radius: 7px;
-  padding: 10px;
-  outline: none;
-}
-
-select:focus,
-input:focus {
-  border-color: var(--cyan);
-  box-shadow: 0 0 0 2px #54d9ff20;
-}
-
-.add-season,
-.add-match,
-.export-button,
-.share-button {
-  border: 0;
-  border-radius: 7px;
-  padding: 11px 16px;
-  font-weight: 700;
+button {
   cursor: pointer;
-  transition: .2s;
 }
 
-.add-season {
-  color: #07111b;
-  background: var(--cyan);
+.app {
+  width: 100%;
+  max-width: 850px;
+  margin: auto;
 }
 
-.add-season:hover,
-.add-match:hover {
-  filter: brightness(1.15);
-  transform: translateY(-1px);
-}
+/* ヘッダー */
 
-.season-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 15px;
-  align-items: start;
-}
-
-.season-card {
-  min-width: 0;
-  overflow: hidden;
-  background: linear-gradient(160deg, #152438, #0d1622 75%);
-  border: 1px solid #344c66;
-  border-radius: 13px;
-  box-shadow: 0 10px 30px #0005;
-}
-
-.season-heading {
+.app-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 17px 18px;
-  background: linear-gradient(100deg, #1d354c, #132233);
-  border-bottom: 1px solid var(--line);
+  gap: 18px;
+  margin-bottom: 25px;
+  padding: 10px 5px 20px;
+  border-bottom: 1px solid rgba(0, 217, 255, .3);
 }
 
-.season-kicker {
+.apex-mark {
+  width: 65px;
+  height: 65px;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 43px;
+  font-weight: 900;
+  font-style: italic;
+  border: 3px solid var(--orange);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  text-shadow: 0 0 15px var(--orange);
+}
+
+.eyebrow,
+.section-kicker {
+  margin: 0 0 5px;
   color: var(--cyan);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
-  letter-spacing: 3px;
-}
-
-.season-heading h2 {
-  margin: 3px 0 0;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 27px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
   letter-spacing: 2px;
 }
 
-.mode-tag {
-  padding: 6px 9px;
+.app-header h1 {
+  margin: 0;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(22px, 5vw, 34px);
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.app-header h1 span {
   color: var(--cyan);
-  background: #54d9ff15;
-  border: 1px solid #54d9ff66;
-  border-radius: 5px;
-  font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
-  font-weight: 700;
 }
 
-.split-list {
-  display: grid;
-  gap: 12px;
-  padding: 12px;
+.header-subtitle {
+  margin: 5px 0 0;
+  color: var(--muted);
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+  letter-spacing: 3px;
 }
 
-.split-card {
-  min-width: 0;
-  padding: 13px;
-  background: #0c1622;
-  border: 1px solid #293d52;
-  border-radius: 9px;
+/* パネル共通 */
+
+.panel {
+  position: relative;
+  margin-bottom: 22px;
+  padding: 22px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #0d1b2d, #08111e);
+  border: 1px solid #1d526c;
+  border-radius: 12px;
+  box-shadow:
+    0 10px 35px rgba(0, 0, 0, .3),
+    inset 0 0 25px rgba(0, 217, 255, .025);
 }
 
-.split-heading {
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 75px;
+  height: 2px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.section-heading {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.split-heading h3 {
+.section-heading h2 {
   margin: 0;
+  font-size: 23px;
+  font-weight: 900;
+}
+
+.live-label,
+.record-count {
   color: var(--cyan);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 13px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
   letter-spacing: 1px;
 }
 
-.match-count {
-  color: var(--muted);
-  font-family: 'Orbitron', sans-serif;
-  font-size: 9px;
-}
+/* シーズン名 */
 
-.rank-area {
-  margin-bottom: 12px;
-}
-
-.rank-area select {
-  width: 100%;
-}
-
-.stats-grid {
+.season-name-area {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 6px;
-  margin-bottom: 13px;
+  grid-template-columns: 110px 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
 }
 
-.stat {
-  min-width: 0;
-  padding: 10px 5px;
-  text-align: center;
-  background: #17283a;
-  border: 1px solid #2c435a;
-  border-radius: 7px;
-}
-
-.stat-label {
-  display: block;
-  min-height: 27px;
-  color: var(--muted);
-  font-size: 10px;
-  line-height: 1.4;
-}
-
-.stat strong {
-  display: block;
-  margin-top: 5px;
-  overflow-wrap: anywhere;
-  color: #fff;
-  font-family: 'Orbitron', sans-serif;
-  font-size: clamp(14px, 1.5vw, 19px);
-}
-
-.match-form {
-  padding-top: 12px;
-  border-top: 1px solid #293d52;
-}
-
-.form-title {
-  margin-bottom: 8px;
-  color: #c6d8e9;
-  font-size: 11px;
+.season-name-area label {
   font-weight: 700;
+  font-size: 14px;
 }
 
-.input-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-}
-
-.input-grid input {
+input,
+select {
   width: 100%;
-  padding: 9px 7px;
-  font-size: 12px;
+  min-width: 0;
+  height: 43px;
+  padding: 0 12px;
+  color: white;
+  background: #07111e;
+  border: 1px solid #315d7b;
+  border-radius: 7px;
+  outline: none;
 }
 
-.input-grid input[type="date"] {
-  grid-column: 1 / -1;
+input:focus,
+select:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 10px rgba(0, 217, 255, .2);
+}
+
+input::placeholder {
+  color: #60758a;
+}
+
+select {
   color-scheme: dark;
 }
 
-.add-match {
-  width: 100%;
-  margin-top: 8px;
-  padding: 9px;
-  color: #07111b;
-  background: var(--cyan);
+/* モードタブ */
+
+.mode-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  padding: 5px;
+  margin-bottom: 10px;
+  background: #050c17;
+  border: 1px solid #1b4962;
+  border-radius: 9px;
+}
+
+.mode-tab {
+  min-height: 44px;
+  color: #a8bbce;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  transition: .2s;
+}
+
+.mode-tab.active {
+  color: white;
+  background: linear-gradient(110deg, #008bbd, #00cfff);
+  box-shadow: 0 0 15px rgba(0, 217, 255, .35);
+  text-shadow: 0 1px 4px #00445c;
+}
+
+.input-note {
+  margin: 0 0 15px;
+  color: var(--muted);
   font-size: 12px;
 }
 
-.history {
-  margin-top: 12px;
-  border-top: 1px solid #293d52;
-  padding-top: 10px;
-}
+/* Split入力 */
 
-.history summary {
-  color: var(--muted);
-  font-size: 11px;
-  cursor: pointer;
-}
-
-.history-list {
-  margin-top: 8px;
-}
-
-.history-row {
+.split-inputs {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.split-input-card {
+  min-width: 0;
+  padding: 14px;
+  background: linear-gradient(145deg, #102b43, #081421);
+  border: 1px solid #1682a8;
+  border-radius: 8px;
+  box-shadow: inset 0 0 15px rgba(0, 217, 255, .04);
+}
+
+.split-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding-bottom: 10px;
+  margin-bottom: 13px;
+  border-bottom: 1px solid #1d6b88;
+}
+
+.split-number {
+  color: var(--orange);
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.split-title h3 {
+  margin: 0;
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: 16px;
+  letter-spacing: 1px;
+}
+
+.input-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 9px;
+}
+
+.field {
+  min-width: 0;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 5px;
+  color: #d9e8f5;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  height: 39px;
+  padding: 0 9px;
+  font-size: 14px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* 保存ボタン */
+
+.save-button {
+  display: block;
+  width: min(100%, 380px);
+  min-height: 49px;
+  margin: 22px auto 0;
+  color: white;
+  background: linear-gradient(110deg, #e85b0b, #ff9b26);
+  border: 1px solid #ffc15b;
+  border-radius: 9px;
+  box-shadow: 0 0 18px rgba(255, 115, 24, .23);
+  font-size: 16px;
+  font-weight: 900;
+  transition: .2s;
+}
+
+.save-button:hover {
+  filter: brightness(1.15);
+  transform: translateY(-2px);
+}
+
+.save-button span {
+  margin-right: 8px;
+  font-size: 20px;
+}
+
+.save-message {
+  min-height: 18px;
+  margin: 10px 0 0;
+  color: var(--cyan);
+  text-align: center;
+  font-size: 12px;
+}
+
+.save-message.error {
+  color: #ff7777;
+}
+
+/* 出力エリア */
+
+.output-description,
+.image-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 16px 0 20px;
+}
+
+.action-buttons button {
+  min-height: 45px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 900;
+  transition: .2s;
+}
+
+.action-buttons button:hover {
+  filter: brightness(1.2);
+  transform: translateY(-1px);
+}
+
+.download-button {
+  color: #06121e;
+  background: linear-gradient(110deg, #00c5ed, #70edff);
+  border: 0;
+}
+
+.share-button {
+  color: white;
+  background: #101d2e;
+  border: 1px solid #47617d;
+}
+
+.action-buttons button span {
+  margin-right: 6px;
+  font-size: 17px;
+}
+
+.action-buttons button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+/* 正方形プロフィール画像 */
+
+.preview-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 680px;
+  aspect-ratio: 1 / 1;
+  padding: 5.5%;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 90% 8%, rgba(0, 153, 255, .25), transparent 38%),
+    radial-gradient(ellipse at 5% 90%, rgba(255, 92, 22, .12), transparent 30%),
+    linear-gradient(145deg, #0c1b30, #050b15 60%, #0a1a2d);
+  border: 3px solid #08d9ff;
+  box-shadow:
+    0 0 22px rgba(0, 217, 255, .2),
+    inset 0 0 35px rgba(0, 217, 255, .08);
+}
+
+/* 背景装飾 */
+
+.profile-card::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  opacity: .18;
+  background-image:
+    linear-gradient(135deg, transparent 48%, #1688b5 49%, transparent 50%),
+    linear-gradient(45deg, transparent 48%, #1688b5 49%, transparent 50%);
+  background-size: 42px 42px;
+}
+
+.profile-card::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 12px;
+  border: 1px solid rgba(0, 217, 255, .3);
+  pointer-events: none;
+}
+
+.profile-top {
+  display: flex;
+  align-items: center;
+  gap: 4%;
+  min-height: 17%;
+}
+
+.profile-logo {
+  display: grid;
+  place-items: center;
+  width: 15%;
+  aspect-ratio: 1;
+  color: #ff573f;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(35px, 8vw, 72px);
+  font-weight: 900;
+  font-style: italic;
+  border: 3px solid #ff573f;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  text-shadow: 0 0 14px #ff573f;
+}
+
+.profile-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+}
+
+.profile-title p {
+  margin: 0;
+  color: white;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(16px, 3.4vw, 28px);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.profile-title h2 {
+  margin: 3px 0;
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(12px, 2.6vw, 21px);
+  letter-spacing: 2px;
+}
+
+.profile-title span {
+  color: #9dbbd1;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(6px, 1.1vw, 9px);
+  letter-spacing: 1.5px;
+}
+
+.profile-decoration {
+  color: var(--orange);
+  font-size: clamp(18px, 4vw, 35px);
+}
+
+.profile-divider {
+  height: 2px;
+  margin: 2% 0 3%;
+  background: linear-gradient(90deg, transparent, var(--cyan), #fff, var(--cyan), transparent);
+  box-shadow: 0 0 10px var(--cyan);
+}
+
+/* 3シーズン */
+
+.profile-seasons {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: space-evenly;
+  min-height: 0;
+  gap: 2%;
+}
+
+.profile-season {
+  display: grid;
+  grid-template-columns: 19% 1fr;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: linear-gradient(110deg, rgba(11, 39, 61, .95), rgba(5, 15, 27, .95));
+  border: 1px solid #00bce9;
+  border-radius: 5px;
+  box-shadow: inset 0 0 15px rgba(0, 217, 255, .06);
+}
+
+.season-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4%;
+  padding: 5px;
+  background: rgba(0, 153, 205, .09);
+  border-right: 1px solid #147b9c;
+  text-align: center;
+}
+
+.season-label span {
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(7px, 1.5vw, 12px);
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.season-label strong {
+  color: white;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(17px, 3.5vw, 29px);
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.season-label small {
+  color: var(--orange);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(6px, 1vw, 8px);
+  letter-spacing: 1px;
+}
+
+.season-splits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-width: 0;
+}
+
+.output-split {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  padding: 4% 5%;
+}
+
+.output-split + .output-split {
+  border-left: 1px solid #16718e;
+}
+
+.output-split-title {
+  margin-bottom: 4%;
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(8px, 1.6vw, 13px);
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.output-rank {
+  display: flex;
   align-items: center;
   gap: 5px;
-  padding: 8px 0;
-  border-bottom: 1px solid #223447;
-  font-size: 10px;
+  margin-bottom: 5%;
+  color: white;
+  font-size: clamp(8px, 1.5vw, 12px);
+  font-weight: 900;
 }
 
-.history-row strong {
-  color: var(--cyan);
-  text-align: right;
+.rank-symbol {
+  color: #b28aff;
+  font-size: 1.3em;
+  text-shadow: 0 0 8px #a46aff;
 }
 
-.delete-match {
-  width: 22px;
-  height: 22px;
-  color: #ff8a8a;
-  background: #ff55551a;
-  border: 1px solid #ff777744;
-  border-radius: 5px;
-  cursor: pointer;
+.output-rank.diamond .rank-symbol {
+  color: #4ccaff;
 }
 
-.empty {
-  color: var(--muted);
-  font-size: 12px;
+.output-rank.predator .rank-symbol {
+  color: #ff544b;
 }
 
-.season-actions {
+.output-rank.bronze .rank-symbol {
+  color: #c58c60;
+}
+
+.output-rank.silver .rank-symbol {
+  color: #c7d5df;
+}
+
+.output-rank.gold .rank-symbol {
+  color: #ffd15a;
+}
+
+.output-rank.platinum .rank-symbol {
+  color: #61e2ce;
+}
+
+.output-stats {
   display: flex;
-  gap: 8px;
-  padding: 0 12px 12px;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.export-button,
-.share-button {
+.output-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px;
+  min-width: 0;
+  color: #c5d7e8;
+  font-size: clamp(7px, 1.25vw, 10px);
+  white-space: nowrap;
+}
+
+.output-stat span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.output-stat strong {
+  color: white;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(8px, 1.45vw, 12px);
+  font-weight: 800;
+}
+
+/* 空のプロフィール */
+
+.empty-profile {
+  display: flex;
   flex: 1;
-  padding: 10px 5px;
-  font-size: 11px;
-}
-
-.export-button {
-  color: var(--cyan);
-  background: #54d9ff13;
-  border: 1px solid #54d9ff66;
-}
-
-.share-button {
-  color: #fff;
-  background: #263d58;
-  border: 1px solid #49617c;
-}
-
-.export-button:hover,
-.share-button:hover {
-  filter: brightness(1.25);
-}
-
-.footnote {
-  margin-top: 18px;
-  color: #6f849b;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--muted);
   text-align: center;
+}
+
+.empty-profile span {
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 900;
+  letter-spacing: 5px;
+  text-shadow: 0 0 18px rgba(0, 217, 255, .4);
+}
+
+.empty-profile p {
+  font-size: clamp(9px, 1.7vw, 13px);
+  line-height: 1.8;
+}
+
+.profile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3%;
+  min-height: 8%;
+  margin-top: 2%;
+  color: #b7eaff;
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(7px, 1.5vw, 12px);
+  font-weight: 800;
+  letter-spacing: clamp(1px, .5vw, 4px);
+  white-space: nowrap;
+}
+
+.footer-line {
+  width: 12%;
+  height: 2px;
+  background: var(--orange);
+  box-shadow: 0 0 8px var(--orange);
+}
+
+.profile-corner {
+  position: absolute;
+  width: 9%;
+  height: 9%;
+  pointer-events: none;
+}
+
+.corner-tl {
+  top: 0;
+  left: 0;
+  border-top: 5px solid var(--orange);
+  border-left: 5px solid var(--orange);
+}
+
+.corner-br {
+  right: 0;
+  bottom: 0;
+  border-right: 5px solid var(--cyan);
+  border-bottom: 5px solid var(--cyan);
+}
+
+.image-note {
+  margin: 12px 0 0;
+  text-align: center;
+}
+
+/* 保存履歴 */
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #081321;
+  border: 1px solid #1b405a;
+  border-radius: 7px;
+}
+
+.history-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.history-info strong {
+  overflow-wrap: anywhere;
+  font-size: 14px;
+}
+
+.history-info span {
+  color: var(--cyan);
+  font-family: "Orbitron", sans-serif;
+  font-size: 9px;
+}
+
+.delete-button {
+  flex-shrink: 0;
+  padding: 7px 12px;
+  color: #ff8c8c;
+  background: transparent;
+  border: 1px solid #80454c;
+  border-radius: 5px;
   font-size: 11px;
 }
 
-/* タブレット */
-@media (max-width: 1000px) {
-  .season-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
+.no-history {
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
+
+.app-footer {
+  padding: 15px 5px;
+  color: #58738c;
+  font-family: "Orbitron", sans-serif;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-align: center;
 }
 
 /* スマートフォン */
-@media (max-width: 650px) {
-  .container {
-    width: 94%;
+
+@media (max-width: 600px) {
+  body {
+    padding: 12px 7px 35px;
   }
 
-  .header {
-    padding-top: 25px;
+  .app-header {
+    gap: 12px;
+    margin-bottom: 15px;
+    padding-bottom: 14px;
   }
 
-  .toolbar {
-    align-items: center;
-    padding: 13px;
+  .apex-mark {
+    width: 48px;
+    height: 48px;
+    font-size: 31px;
   }
 
-  .season-grid {
-    grid-template-columns: 1fr;
+  .app-header h1 {
+    font-size: 22px;
   }
 
-  .season-heading h2 {
-    font-size: 25px;
+  .panel {
+    padding: 13px 10px;
+    margin-bottom: 15px;
   }
 
-  .stat strong {
+  .section-heading {
+    margin-bottom: 14px;
+  }
+
+  .section-heading h2 {
     font-size: 19px;
   }
-}
 
-
-
-/* 入力欄をコンパクトに */
-.match-form {
-  padding-top: 9px;
-}
-
-.form-title {
-  margin-bottom: 6px;
-  font-size: 10px;
-}
-
-.input-grid {
-  grid-template-columns: 1.2fr 0.7fr 0.7fr 0.9fr;
-  gap: 5px;
-}
-
-.input-grid input {
-  width: 100%;
-  min-width: 0;
-  height: 32px;
-  padding: 5px 6px;
-  font-size: 11px;
-  border-radius: 5px;
-}
-
-.input-grid input[type="date"] {
-  grid-column: auto;
-  font-size: 10px;
-}
-
-.add-match {
-  width: auto;
-  display: block;
-  margin: 7px 0 0 auto;
-  padding: 6px 12px;
-  font-size: 10px;
-}
-
-.history {
-  margin-top: 9px;
-  padding-top: 8px;
-}
-
-/* スマホでは入力欄を2列に */
-@media (max-width: 650px) {
-  .input-grid {
-    grid-template-columns: 1fr 1fr;
+  .section-kicker {
+    font-size: 8px;
   }
 
-  .input-grid input[type="date"] {
-    grid-column: 1 / -1;
+  .season-name-area {
+    grid-template-columns: 75px minmax(0, 1fr);
+    gap: 7px;
+  }
+
+  .season-name-area label {
+    font-size: 12px;
+  }
+
+  input,
+  select {
+    height: 38px;
+    padding: 0 8px;
+    font-size: 13px;
+  }
+
+  .mode-tab {
+    min-height: 39px;
+    font-size: 11px;
+  }
+
+  .input-note {
+    font-size: 10px;
+  }
+
+  /* Splitはスマホでも必ず横2列 */
+  .split-inputs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .split-input-card {
+    padding: 8px 6px;
+  }
+
+  .split-title {
+    gap: 5px;
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+  }
+
+  .split-title h3 {
+    font-size: 11px;
+  }
+
+  .split-number {
+    font-size: 9px;
+  }
+
+  .input-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 5px;
+  }
+
+  .field label {
+    min-height: 26px;
+    margin-bottom: 3px;
+    font-size: 9px;
+    line-height: 1.35;
+  }
+
+  .field input,
+  .field select {
+    height: 32px;
+    padding: 0 5px;
+    font-size: 11px;
+  }
+
+  .save-button {
+    min-height: 43px;
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .action-buttons {
+    gap: 6px;
+  }
+
+  .action-buttons button {
+    min-height: 41px;
+    padding: 5px 3px;
+    font-size: 11px;
+  }
+
+  .profile-card {
+    padding: 5%;
+    border-width: 2px;
+  }
+
+  .profile-card::after {
+    inset: 6px;
+  }
+
+  .output-stat {
+    font-size: clamp(6px, 1.5vw, 9px);
+  }
+
+  .output-stat strong {
+    font-size: clamp(7px, 1.7vw, 10px);
+  }
+
+  .output-split {
+    padding: 4% 3%;
+  }
+
+  .output-split-title {
+    font-size: clamp(7px, 1.8vw, 11px);
+  }
+
+  .output-rank {
+    font-size: clamp(7px, 1.6vw, 10px);
+  }
+
+  .profile-footer {
+    letter-spacing: 1px;
+  }
+}
+
+@media (max-width: 360px) {
+  .panel {
+    padding: 10px 7px;
+  }
+
+  .split-input-card {
+    padding: 7px 4px;
+  }
+
+  .field label {
+    font-size: 8px;
+  }
+
+  .field input,
+  .field select {
+    font-size: 10px;
   }
 }
