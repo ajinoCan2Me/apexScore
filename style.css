@@ -2,13 +2,10 @@
 :root {
   --bg: #060b14;
   --panel: #0b1524;
-  --panel-light: #10243a;
   --cyan: #00d9ff;
-  --cyan-soft: #58eaff;
   --orange: #ff8128;
   --white: #f3f8ff;
   --muted: #8ba2b9;
-  --line: #1b526b;
 }
 
 * {
@@ -17,17 +14,15 @@
 
 body {
   margin: 0;
-  padding: 20px 12px 50px;
-  background:
-    radial-gradient(ellipse at 50% 0%, #102b48 0%, transparent 55%),
-    linear-gradient(160deg, #050912, #0a1422 55%, #050912);
+  padding: 20px 12px 45px;
   color: var(--white);
+  background:
+    radial-gradient(ellipse at 50% 0%, #102b48, transparent 55%),
+    linear-gradient(160deg, #050912, #0a1422, #050912);
   font-family: "Noto Sans JP", sans-serif;
 }
 
-button,
-input,
-select {
+button, input, select {
   font: inherit;
 }
 
@@ -37,51 +32,49 @@ button {
 
 .app {
   width: 100%;
-  max-width: 850px;
+  max-width: 800px;
   margin: auto;
 }
 
-/* ヘッダー */
+/* HEADER */
 
 .app-header {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 25px;
+  gap: 17px;
+  margin-bottom: 24px;
   padding: 10px 5px 20px;
-  border-bottom: 1px solid rgba(0, 217, 255, .3);
+  border-bottom: 1px solid rgba(0,217,255,.3);
 }
 
 .apex-mark {
-  width: 65px;
-  height: 65px;
   display: grid;
   place-items: center;
-  color: #fff;
-  font-family: "Orbitron", sans-serif;
-  font-size: 43px;
+  width: 62px;
+  height: 62px;
+  color: white;
+  border: 3px solid var(--orange);
+  clip-path: polygon(50% 0,100% 100%,0 100%);
+  font-family: "Orbitron",sans-serif;
+  font-size: 42px;
   font-weight: 900;
   font-style: italic;
-  border: 3px solid var(--orange);
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
   text-shadow: 0 0 15px var(--orange);
 }
 
-.eyebrow,
-.section-kicker {
+.eyebrow, .section-kicker {
   margin: 0 0 5px;
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 10px;
   letter-spacing: 2px;
 }
 
 .app-header h1 {
   margin: 0;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(22px, 5vw, 34px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(22px,5vw,34px);
   font-weight: 900;
-  letter-spacing: 2px;
 }
 
 .app-header h1 span {
@@ -91,24 +84,22 @@ button {
 .header-subtitle {
   margin: 5px 0 0;
   color: var(--muted);
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 10px;
   letter-spacing: 3px;
 }
 
-/* パネル共通 */
+/* PANELS */
 
 .panel {
   position: relative;
   margin-bottom: 22px;
   padding: 22px;
   overflow: hidden;
-  background: linear-gradient(145deg, #0d1b2d, #08111e);
+  background: linear-gradient(145deg,#0d1b2d,#08111e);
   border: 1px solid #1d526c;
   border-radius: 12px;
-  box-shadow:
-    0 10px 35px rgba(0, 0, 0, .3),
-    inset 0 0 25px rgba(0, 217, 255, .025);
+  box-shadow: 0 10px 35px rgba(0,0,0,.3);
 }
 
 .panel::before {
@@ -136,15 +127,14 @@ button {
   font-weight: 900;
 }
 
-.live-label,
-.record-count {
+.live-label, .record-count {
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 10px;
   letter-spacing: 1px;
 }
 
-/* シーズン名 */
+/* SEASON INPUT */
 
 .season-name-area {
   display: grid;
@@ -155,12 +145,11 @@ button {
 }
 
 .season-name-area label {
-  font-weight: 700;
   font-size: 14px;
+  font-weight: 700;
 }
 
-input,
-select {
+input, select {
   width: 100%;
   min-width: 0;
   height: 43px;
@@ -172,10 +161,9 @@ select {
   outline: none;
 }
 
-input:focus,
-select:focus {
+input:focus, select:focus {
   border-color: var(--cyan);
-  box-shadow: 0 0 10px rgba(0, 217, 255, .2);
+  box-shadow: 0 0 10px rgba(0,217,255,.2);
 }
 
 input::placeholder {
@@ -186,7 +174,7 @@ select {
   color-scheme: dark;
 }
 
-/* モードタブ */
+/* MODE TABS */
 
 .mode-tabs {
   display: grid;
@@ -205,18 +193,16 @@ select {
   background: transparent;
   border: 0;
   border-radius: 6px;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 1px;
-  transition: .2s;
 }
 
 .mode-tab.active {
   color: white;
-  background: linear-gradient(110deg, #008bbd, #00cfff);
-  box-shadow: 0 0 15px rgba(0, 217, 255, .35);
-  text-shadow: 0 1px 4px #00445c;
+  background: linear-gradient(110deg,#008bbd,#00cfff);
+  box-shadow: 0 0 15px rgba(0,217,255,.35);
 }
 
 .input-note {
@@ -225,101 +211,73 @@ select {
   font-size: 12px;
 }
 
-/* Split入力 */
+/* INPUT CARD */
 
-.split-inputs {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-
-.split-input-card {
-  min-width: 0;
-  padding: 14px;
-  background: linear-gradient(145deg, #102b43, #081421);
+.input-card {
+  padding: 17px;
+  background: linear-gradient(145deg,#102b43,#081421);
   border: 1px solid #1682a8;
   border-radius: 8px;
-  box-shadow: inset 0 0 15px rgba(0, 217, 255, .04);
+  box-shadow: inset 0 0 15px rgba(0,217,255,.04);
 }
 
-.split-title {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding-bottom: 10px;
-  margin-bottom: 13px;
-  border-bottom: 1px solid #1d6b88;
-}
-
-.split-number {
-  color: var(--orange);
-  font-family: "Orbitron", sans-serif;
-  font-size: 11px;
-  font-weight: 800;
-}
-
-.split-title h3 {
-  margin: 0;
+.input-card-title {
+  padding-bottom: 12px;
+  margin-bottom: 15px;
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
-  font-size: 16px;
+  border-bottom: 1px solid #1d6b88;
+  font-family: "Orbitron",sans-serif;
+  font-size: 13px;
+  font-weight: 800;
   letter-spacing: 1px;
-}
-
-.input-fields {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 9px;
 }
 
 .field {
   min-width: 0;
+  margin-bottom: 14px;
 }
 
 .field label {
   display: block;
-  margin-bottom: 5px;
+  margin-bottom: 6px;
   color: #d9e8f5;
   font-size: 12px;
   font-weight: 700;
 }
 
-.field input,
-.field select {
-  height: 39px;
-  padding: 0 9px;
-  font-size: 14px;
+.stats-inputs {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 12px;
+}
+
+.stats-inputs .field {
+  margin-bottom: 0;
 }
 
 .hidden {
   display: none !important;
 }
 
-/* 保存ボタン */
+/* SAVE BUTTON */
 
 .save-button {
   display: block;
-  width: min(100%, 380px);
+  width: min(100%,380px);
   min-height: 49px;
   margin: 22px auto 0;
   color: white;
-  background: linear-gradient(110deg, #e85b0b, #ff9b26);
+  background: linear-gradient(110deg,#e85b0b,#ff9b26);
   border: 1px solid #ffc15b;
   border-radius: 9px;
-  box-shadow: 0 0 18px rgba(255, 115, 24, .23);
+  box-shadow: 0 0 18px rgba(255,115,24,.23);
   font-size: 16px;
   font-weight: 900;
-  transition: .2s;
 }
 
 .save-button:hover {
   filter: brightness(1.15);
   transform: translateY(-2px);
-}
-
-.save-button span {
-  margin-right: 8px;
-  font-size: 20px;
 }
 
 .save-message {
@@ -334,10 +292,9 @@ select {
   color: #ff7777;
 }
 
-/* 出力エリア */
+/* OUTPUT BUTTONS */
 
-.output-description,
-.image-note {
+.output-description, .image-note {
   color: var(--muted);
   font-size: 12px;
   line-height: 1.7;
@@ -355,17 +312,11 @@ select {
   border-radius: 7px;
   font-size: 13px;
   font-weight: 900;
-  transition: .2s;
-}
-
-.action-buttons button:hover {
-  filter: brightness(1.2);
-  transform: translateY(-1px);
 }
 
 .download-button {
   color: #06121e;
-  background: linear-gradient(110deg, #00c5ed, #70edff);
+  background: linear-gradient(110deg,#00c5ed,#70edff);
   border: 0;
 }
 
@@ -375,22 +326,17 @@ select {
   border: 1px solid #47617d;
 }
 
-.action-buttons button span {
-  margin-right: 6px;
-  font-size: 17px;
-}
-
 .action-buttons button:disabled {
   opacity: .6;
   cursor: wait;
 }
 
-/* 正方形プロフィール画像 */
+/* SQUARE PROFILE IMAGE */
 
 .preview-wrap {
-  width: 100%;
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .profile-card {
@@ -401,19 +347,16 @@ select {
   width: 100%;
   max-width: 680px;
   aspect-ratio: 1 / 1;
-  padding: 5.5%;
+  padding: 5%;
   overflow: hidden;
   background:
-    radial-gradient(ellipse at 90% 8%, rgba(0, 153, 255, .25), transparent 38%),
-    radial-gradient(ellipse at 5% 90%, rgba(255, 92, 22, .12), transparent 30%),
-    linear-gradient(145deg, #0c1b30, #050b15 60%, #0a1a2d);
-  border: 3px solid #08d9ff;
-  box-shadow:
-    0 0 22px rgba(0, 217, 255, .2),
-    inset 0 0 35px rgba(0, 217, 255, .08);
+    radial-gradient(ellipse at 90% 8%,rgba(0,153,255,.25),transparent 38%),
+    radial-gradient(ellipse at 5% 90%,rgba(255,92,22,.12),transparent 30%),
+    linear-gradient(145deg,#0c1b30,#050b15 60%,#0a1a2d);
+  border: 3px solid var(--cyan);
+  box-shadow: 0 0 22px rgba(0,217,255,.2),
+    inset 0 0 35px rgba(0,217,255,.08);
 }
-
-/* 背景装飾 */
 
 .profile-card::before {
   content: "";
@@ -422,8 +365,8 @@ select {
   inset: 0;
   opacity: .18;
   background-image:
-    linear-gradient(135deg, transparent 48%, #1688b5 49%, transparent 50%),
-    linear-gradient(45deg, transparent 48%, #1688b5 49%, transparent 50%);
+    linear-gradient(135deg,transparent 48%,#1688b5 49%,transparent 50%),
+    linear-gradient(45deg,transparent 48%,#1688b5 49%,transparent 50%);
   background-size: 42px 42px;
 }
 
@@ -432,7 +375,7 @@ select {
   position: absolute;
   z-index: -1;
   inset: 12px;
-  border: 1px solid rgba(0, 217, 255, .3);
+  border: 1px solid rgba(0,217,255,.3);
   pointer-events: none;
 }
 
@@ -440,7 +383,7 @@ select {
   display: flex;
   align-items: center;
   gap: 4%;
-  min-height: 17%;
+  min-height: 18%;
 }
 
 .profile-logo {
@@ -449,12 +392,12 @@ select {
   width: 15%;
   aspect-ratio: 1;
   color: #ff573f;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(35px, 8vw, 72px);
+  border: 3px solid #ff573f;
+  clip-path: polygon(50% 0,100% 100%,0 100%);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(35px,8vw,72px);
   font-weight: 900;
   font-style: italic;
-  border: 3px solid #ff573f;
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
   text-shadow: 0 0 14px #ff573f;
 }
 
@@ -467,40 +410,39 @@ select {
 .profile-title p {
   margin: 0;
   color: white;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(16px, 3.4vw, 28px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(16px,3.4vw,28px);
   font-weight: 900;
-  letter-spacing: 1px;
 }
 
 .profile-title h2 {
   margin: 3px 0;
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(12px, 2.6vw, 21px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(12px,2.6vw,21px);
   letter-spacing: 2px;
 }
 
 .profile-title span {
   color: #9dbbd1;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(6px, 1.1vw, 9px);
-  letter-spacing: 1.5px;
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(6px,1.1vw,9px);
+  letter-spacing: 1px;
 }
 
 .profile-decoration {
   color: var(--orange);
-  font-size: clamp(18px, 4vw, 35px);
+  font-size: clamp(18px,4vw,35px);
 }
 
 .profile-divider {
   height: 2px;
   margin: 2% 0 3%;
-  background: linear-gradient(90deg, transparent, var(--cyan), #fff, var(--cyan), transparent);
+  background: linear-gradient(90deg,transparent,var(--cyan),#fff,var(--cyan),transparent);
   box-shadow: 0 0 10px var(--cyan);
 }
 
-/* 3シーズン */
+/* SEASON ROWS */
 
 .profile-seasons {
   display: flex;
@@ -513,14 +455,13 @@ select {
 
 .profile-season {
   display: grid;
-  grid-template-columns: 19% 1fr;
+  grid-template-columns: 22% 1fr;
   flex: 1;
   min-height: 0;
   overflow: hidden;
-  background: linear-gradient(110deg, rgba(11, 39, 61, .95), rgba(5, 15, 27, .95));
+  background: linear-gradient(110deg,rgba(11,39,61,.95),rgba(5,15,27,.95));
   border: 1px solid #00bce9;
   border-radius: 5px;
-  box-shadow: inset 0 0 15px rgba(0, 217, 255, .06);
 }
 
 .season-label {
@@ -528,117 +469,103 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4%;
+  gap: 5%;
   padding: 5px;
-  background: rgba(0, 153, 205, .09);
+  background: rgba(0,153,205,.09);
   border-right: 1px solid #147b9c;
   text-align: center;
 }
 
 .season-label span {
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(7px, 1.5vw, 12px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(7px,1.5vw,12px);
   font-weight: 800;
-  letter-spacing: 1px;
 }
 
 .season-label strong {
   color: white;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(17px, 3.5vw, 29px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(17px,3.5vw,29px);
   font-weight: 900;
   overflow-wrap: anywhere;
 }
 
 .season-label small {
   color: var(--orange);
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(6px, 1vw, 8px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(6px,1vw,8px);
   letter-spacing: 1px;
 }
 
-.season-splits {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  min-width: 0;
-}
-
-.output-split {
+.season-data {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
-  padding: 4% 5%;
+  padding: 4% 6%;
 }
 
-.output-split + .output-split {
-  border-left: 1px solid #16718e;
-}
-
-.output-split-title {
-  margin-bottom: 4%;
-  color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(8px, 1.6vw, 13px);
-  font-weight: 900;
-  letter-spacing: 1px;
-}
-
-.output-rank {
+.profile-rank {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
   margin-bottom: 5%;
   color: white;
-  font-size: clamp(8px, 1.5vw, 12px);
+  font-size: clamp(9px,1.8vw,14px);
   font-weight: 900;
 }
 
-.rank-symbol {
+.profile-rank span {
   color: #b28aff;
-  font-size: 1.3em;
+  font-size: 1.5em;
   text-shadow: 0 0 8px #a46aff;
 }
 
-.output-rank.diamond .rank-symbol {
+.profile-rank.diamond span {
   color: #4ccaff;
 }
 
-.output-rank.predator .rank-symbol {
+.profile-rank.predator span {
   color: #ff544b;
 }
 
-.output-rank.bronze .rank-symbol {
+.profile-rank.bronze span {
   color: #c58c60;
 }
 
-.output-rank.silver .rank-symbol {
+.profile-rank.silver span {
   color: #c7d5df;
 }
 
-.output-rank.gold .rank-symbol {
+.profile-rank.gold span {
   color: #ffd15a;
 }
 
-.output-rank.platinum .rank-symbol {
+.profile-rank.platinum span {
   color: #61e2ce;
+}
+
+.casual-rank {
+  color: var(--orange);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(8px,1.5vw,12px);
 }
 
 .output-stats {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
 }
 
 .output-stat {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 4px;
+  gap: 5px;
   min-width: 0;
   color: #c5d7e8;
-  font-size: clamp(7px, 1.25vw, 10px);
+  font-size: clamp(7px,1.4vw,11px);
   white-space: nowrap;
 }
 
@@ -649,12 +576,10 @@ select {
 
 .output-stat strong {
   color: white;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(8px, 1.45vw, 12px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(8px,1.7vw,13px);
   font-weight: 800;
 }
-
-/* 空のプロフィール */
 
 .empty-profile {
   display: flex;
@@ -668,15 +593,15 @@ select {
 
 .empty-profile span {
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(28px, 6vw, 48px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(28px,6vw,48px);
   font-weight: 900;
   letter-spacing: 5px;
-  text-shadow: 0 0 18px rgba(0, 217, 255, .4);
+  text-shadow: 0 0 18px rgba(0,217,255,.4);
 }
 
 .empty-profile p {
-  font-size: clamp(9px, 1.7vw, 13px);
+  font-size: clamp(9px,1.7vw,13px);
   line-height: 1.8;
 }
 
@@ -688,10 +613,10 @@ select {
   min-height: 8%;
   margin-top: 2%;
   color: #b7eaff;
-  font-family: "Orbitron", sans-serif;
-  font-size: clamp(7px, 1.5vw, 12px);
+  font-family: "Orbitron",sans-serif;
+  font-size: clamp(7px,1.5vw,12px);
   font-weight: 800;
-  letter-spacing: clamp(1px, .5vw, 4px);
+  letter-spacing: clamp(1px,.5vw,4px);
   white-space: nowrap;
 }
 
@@ -702,33 +627,7 @@ select {
   box-shadow: 0 0 8px var(--orange);
 }
 
-.profile-corner {
-  position: absolute;
-  width: 9%;
-  height: 9%;
-  pointer-events: none;
-}
-
-.corner-tl {
-  top: 0;
-  left: 0;
-  border-top: 5px solid var(--orange);
-  border-left: 5px solid var(--orange);
-}
-
-.corner-br {
-  right: 0;
-  bottom: 0;
-  border-right: 5px solid var(--cyan);
-  border-bottom: 5px solid var(--cyan);
-}
-
-.image-note {
-  margin: 12px 0 0;
-  text-align: center;
-}
-
-/* 保存履歴 */
+/* HISTORY */
 
 .history-list {
   display: flex;
@@ -761,7 +660,7 @@ select {
 
 .history-info span {
   color: var(--cyan);
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 9px;
 }
 
@@ -784,13 +683,13 @@ select {
 .app-footer {
   padding: 15px 5px;
   color: #58738c;
-  font-family: "Orbitron", sans-serif;
+  font-family: "Orbitron",sans-serif;
   font-size: 9px;
   letter-spacing: 2px;
   text-align: center;
 }
 
-/* スマートフォン */
+/* SMARTPHONE */
 
 @media (max-width: 600px) {
   body {
@@ -831,7 +730,7 @@ select {
   }
 
   .season-name-area {
-    grid-template-columns: 75px minmax(0, 1fr);
+    grid-template-columns: 75px minmax(0,1fr);
     gap: 7px;
   }
 
@@ -839,8 +738,7 @@ select {
     font-size: 12px;
   }
 
-  input,
-  select {
+  input, select {
     height: 38px;
     padding: 0 8px;
     font-size: 13px;
@@ -851,50 +749,22 @@ select {
     font-size: 11px;
   }
 
-  .input-note {
-    font-size: 10px;
+  .input-card {
+    padding: 12px 9px;
   }
 
-  /* Splitはスマホでも必ず横2列 */
-  .split-inputs {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-  }
-
-  .split-input-card {
-    padding: 8px 6px;
-  }
-
-  .split-title {
-    gap: 5px;
-    padding-bottom: 7px;
-    margin-bottom: 9px;
-  }
-
-  .split-title h3 {
-    font-size: 11px;
-  }
-
-  .split-number {
-    font-size: 9px;
-  }
-
-  .input-fields {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px 5px;
+  .stats-inputs {
+    grid-template-columns: repeat(3,minmax(0,1fr));
+    gap: 7px;
   }
 
   .field label {
-    min-height: 26px;
-    margin-bottom: 3px;
-    font-size: 9px;
-    line-height: 1.35;
+    font-size: 10px;
   }
 
-  .field input,
-  .field select {
-    height: 32px;
-    padding: 0 5px;
+  .stats-inputs input {
+    height: 35px;
+    padding: 0 6px;
     font-size: 11px;
   }
 
@@ -923,24 +793,16 @@ select {
     inset: 6px;
   }
 
+  .season-data {
+    padding: 4% 5%;
+  }
+
   .output-stat {
-    font-size: clamp(6px, 1.5vw, 9px);
+    font-size: clamp(7px,1.7vw,10px);
   }
 
   .output-stat strong {
-    font-size: clamp(7px, 1.7vw, 10px);
-  }
-
-  .output-split {
-    padding: 4% 3%;
-  }
-
-  .output-split-title {
-    font-size: clamp(7px, 1.8vw, 11px);
-  }
-
-  .output-rank {
-    font-size: clamp(7px, 1.6vw, 10px);
+    font-size: clamp(8px,1.8vw,11px);
   }
 
   .profile-footer {
@@ -953,16 +815,15 @@ select {
     padding: 10px 7px;
   }
 
-  .split-input-card {
-    padding: 7px 4px;
+  .stats-inputs {
+    gap: 5px;
   }
 
   .field label {
-    font-size: 8px;
+    font-size: 9px;
   }
 
-  .field input,
-  .field select {
+  .stats-inputs input {
     font-size: 10px;
   }
 }
